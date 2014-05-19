@@ -179,11 +179,9 @@ public class Mesa extends JFrame
 		for(int m = 0; m < 40; m++)
 		{
 			if (m==0||m==10||m==18||m==20||m==24||m==30){
-				cartaLugar[m]=null;
 				continue;
 			}
 			if (m==2||m==12||m==16||m==22||m==27||m==37){
-				cartaLugar[m]=null;
 				continue;
 			}
 			String caminho1 = "img/Lugar"+(m)+".png";
@@ -226,12 +224,14 @@ public class Mesa extends JFrame
 			for(int n = 0; n < 2; n++)
 				g.drawImage(imagensDados[qtdDados[n] - 1], 800+(150*n), 250, 75, 75, null);
 			
-			//if (correnteLugar == true){
-			//g.drawImage(CartaLugar[PosCorrente - 1],800, 350, 150,200,null);
-			//}
-			//if (correnteChance == true){
-			g.drawImage(cartaChance[VirarCarta()],800, 350, 150,200,null);
-			//}
+			if (posCorrELugar == true){
+				g.drawImage(cartaLugar[posCorr],800, 350, 150,200,null);
+				posCorrELugar = false;
+			}
+			if(posCorrEChance == true){
+				g.drawImage(cartaChance[VirarCarta()],800, 350, 150,200,null);
+				posCorrEChance = false;
+			}
 			
 		} /* end if */
 		
@@ -273,6 +273,15 @@ public class Mesa extends JFrame
 			mostraDados=true;
 			
 			posCorr = tab.jogadores[jogCorr].retornaPos();
+			
+			if (posCorr==1||posCorr==3||posCorr==4||posCorr==5||posCorr==6||posCorr==7||posCorr==8||posCorr==9
+					||posCorr==11||posCorr==13||posCorr==14||posCorr==15||posCorr==17||posCorr==19||posCorr==21
+					||posCorr==23||posCorr==25||posCorr==26||posCorr==28||posCorr==29){
+				posCorrELugar = true;
+			}else if (posCorr==2||posCorr==12||posCorr==16||posCorr==22||posCorr==27||posCorr==37){
+				posCorrEChance = true;
+			}else posCorrEAuto = true;
+			
 			
 			/*if (binSearch(posLugar, PosCorrente) == -1){
 				correnteLugar = true;
