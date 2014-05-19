@@ -10,28 +10,35 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class Mesa extends JFrame 
 {
-	Random random;
-	Random sorte;
+	/* Variaveis de randomizacao */
+	Random ranDado; /* Referente ao numero tirado nos dois dados */
+	Random ranChance; /* Referente a carta de sorte que sera virada */
 
-	public int valores[];
-	int VJogador;
-	boolean mostraDados = false;
-	boolean correnteLugar = false;
-	boolean correnteChance = false;
-	boolean correnteAuto = false;
+	public int qtdDados[]; /* Quantidade de dados */
 	
+	/* Variaveis booleanas */
+	boolean mostraDados = false;
+	boolean posCorrELugar = false;
+	boolean posCorrEChance = false;
+	boolean posCorrEAuto = false;
+	
+	/* Itens que serao carregados na interface */
 	Image imagensDados[];
-	Image CartaLugar[];
-	Image CartaChance[];
+	Image cartaLugar[];
+	Image cartaChance[];
 	Tabuleiro tab;
-	int JogCorrente = 0;
-	int PosCorrente = 0;
-	int posLugar[] = {1,3,4,5,6,7,8,9,11,13,14,15,17,19,21,23,25,26,28,29,31,32,33,34,35,36,38,39}; 
-	int posChance[] = {2,12,16,22,27,37};
-	int posAuto[] = {0,10,18,20,24,30};
-	//DadosPanel dp;
-	int x;
+	
+	/* Variaveis de posicao e vetor de posicao corrente */
+	int jogCorr = 0;
+	int posCorr = 0;
+	
+	/* Vetores que informam a categoria das casas do tabuleiro */
+	int vetPosLugar[] = {1,3,4,5,6,7,8,9,11,13,14,15,17,19,21,23,25,26,28,29,
+			31,32,33,34,35,36,38,39}; /* Cartas de localizacao ou empresa */ 
+	int vetPosChance[] = {2,12,16,22,27,37}; /* Cartas de sorte ou reves */
+	int vetPosAuto[] = {0,10,18,20,24,30}; /* Cartas de acao automatica a ser executada */
 
+	/* Cricao dos itens de titulos */
 	JLabel Turno;
 	JLabel JogadorNum;
 	JLabel JogadorNumSaldo;
@@ -55,20 +62,21 @@ public class Mesa extends JFrame
 	JLabel Jogador6;
 	JLabel SaldoJ6;
 
-	public Mesa(int numJogadores)
+	/* Inicializador da classe, recebendo quantidade de jogadores */
+	public Mesa(int numJogs)
 	{
-		this.x=numJogadores;
 		setLayout(null);
 		setBackground(Color.white);
 		Container c = getContentPane();
 		c.setBackground(Color.white);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		
+		/* Itens da area direita ao tabuleiro */
 		Turno = new JLabel("Turno");
 		Turno.setBounds(750,50,100,50);
 		add(Turno);
 		
-		JogadorNum = new JLabel("Jogador Num");
+		JogadorNum = new JLabel("Jogador "+(jogCorr+1));
 		JogadorNum.setBounds(750,75,100,50);
 		add(JogadorNum);
 		
@@ -81,7 +89,8 @@ public class Mesa extends JFrame
 		jogarDado.addActionListener(new jogarDadosButton_Click());
 		add(jogarDado);
 		
-		
+		/* Mostra para cada jogador o numero jogador e seu saldo, 
+		 * itens da area inferior ao tabuleiro */
 		Jogador1 = new JLabel("Jogador 1");
 		Jogador1.setBounds(100,700,100,50);
 		add(Jogador1);
@@ -89,7 +98,7 @@ public class Mesa extends JFrame
 		SaldoJ1 = new JLabel("R$ 5.000,00");
 		SaldoJ1.setBounds(100,725,100,50);
 		add(SaldoJ1);
-		
+
 		Jogador2 = new JLabel("Jogador 2");
 		Jogador2.setBounds(200,700,100,50);
 		add(Jogador2);
@@ -98,77 +107,96 @@ public class Mesa extends JFrame
 		SaldoJ2.setBounds(200,725,100,50);
 		add(SaldoJ2);
 		
-		Jogador3 = new JLabel("Jogador 3");
-		Jogador3.setBounds(300,700,100,50);
-		add(Jogador3);
-	
-		SaldoJ3 = new JLabel("R$ 5.000,00");
-		SaldoJ3.setBounds(300,725,100,50);
-		add(SaldoJ3);
+		/* Mostra jogador e saldo para demais jogadores se existirem*/
+		if (numJogs >2)
+		{			
+			Jogador3 = new JLabel("Jogador 3");
+			Jogador3.setBounds(300,700,100,50);
+			add(Jogador3);
 		
-		Jogador4 = new JLabel("Jogador 4");
-		Jogador4.setBounds(400,700,100,50);
-		add(Jogador4);
-	
-		SaldoJ4 = new JLabel("R$ 5.000,00");
-		SaldoJ4.setBounds(400,725,100,50);
-		add(SaldoJ4);
+			SaldoJ3 = new JLabel("R$ 5.000,00");
+			SaldoJ3.setBounds(300,725,100,50);
+			add(SaldoJ3);
+			
+			if (numJogs >3)
+			{
+				Jogador4 = new JLabel("Jogador 4");
+				Jogador4.setBounds(400,700,100,50);
+				add(Jogador4);
+			
+				SaldoJ4 = new JLabel("R$ 5.000,00");
+				SaldoJ4.setBounds(400,725,100,50);
+				add(SaldoJ4);
+				
+				if (numJogs >4)
+				{
+					Jogador5 = new JLabel("Jogador 5");
+					Jogador5.setBounds(500,700,100,50);
+					add(Jogador5);
+				
+					SaldoJ5 = new JLabel("R$ 5.000,00");
+					SaldoJ5.setBounds(500,725,100,50);
+					add(SaldoJ5);
+					
+					if (numJogs >5){
+						Jogador6 = new JLabel("Jogador 6");
+						Jogador6.setBounds(600,700,100,50);
+						add(Jogador6);
+					
+						SaldoJ6= new JLabel("R$ 5.000,00");
+						SaldoJ6.setBounds(600,725,100,50);
+						add(SaldoJ6);
+					}
+				}
+			}
+			
+		} /* end if */
 		
-		Jogador5 = new JLabel("Jogador 5");
-		Jogador5.setBounds(500,700,100,50);
-		add(Jogador5);
-	
-		SaldoJ5 = new JLabel("R$ 5.000,00");
-		SaldoJ5.setBounds(500,725,100,50);
-		add(SaldoJ5);
+		/*Cria objetos de randomizacao*/
+		ranDado = new Random();
+		ranChance = new Random();
 		
-		Jogador6 = new JLabel("Jogador 6");
-		Jogador6.setBounds(600,700,100,50);
-		add(Jogador6);
-	
-		SaldoJ6= new JLabel("R$ 5.000,00");
-		SaldoJ6.setBounds(600,725,100,50);
-		add(SaldoJ6);
-		
-		
-		
-		random = new Random();
-		sorte = new Random();
+		/* cria imagens*/
 		imagensDados = new Image[6];
-		valores = new int[2];
-		
-		CartaLugar = new Image[40];
-		
-		CartaChance = new Image[30];
-		
-		
+		qtdDados = new int[2];
+		cartaLugar = new Image[40];		
+		cartaChance = new Image[30];
+				
+		/* Carrega imagens das cartas de sorte ou reves */
 		for(int cont = 0; cont < 30; cont++)
 		{
 			String caminho3 = "img/chance"+(cont+1)+".png";
 				try
 				{
-					CartaChance[cont] = ImageIO.read(new File(caminho3));
+					cartaChance[cont] = ImageIO.read(new File(caminho3));
 				}
 				catch (IOException e)
 				{
 				}
-		}
+		} /*end for*/
 		
+		/* Carrega imagens das cartas de localizacao ou empresa, com espacos vazios*/
 		for(int m = 0; m < 40; m++)
 		{
-			if (m+1==2||m+1==10||m+1==12||m+1==16||m+1==18||m+1==20||m+1==22||m+1==24||m+1==27||m+1==30||m+1==37){
+			if (m==0||m==10||m==18||m==20||m==24||m==30){
+				cartaLugar[m]=null;
 				continue;
 			}
-			String caminho1 = "img/Lugar"+(m+1)+".png";
+			if (m==2||m==12||m==16||m==22||m==27||m==37){
+				cartaLugar[m]=null;
+				continue;
+			}
+			String caminho1 = "img/Lugar"+(m)+".png";
 				try
 				{
-					CartaLugar[m] = ImageIO.read(new File(caminho1));
+					cartaLugar[m] = ImageIO.read(new File(caminho1));
 				}
 				catch (IOException e)
 				{
 				}
-		}
+		} /* end for */
         
+		/* Carrega imagens dos dados */
 		for(int n = 0; n < 6; n++)
 		{
 			String caminho2 = "img/Dice"+(n+1)+".png";
@@ -179,64 +207,73 @@ public class Mesa extends JFrame
 				catch (IOException e)
 				{
 				}
-		}
+		} /* end for */
+		
+		/* Carrega imagem do tabuleiro com os pinos referentes aos jogadores */
+		tab = new Tabuleiro(numJogs);
+		tab.setBounds(100, 100, 600, 600);
+		add(tab);
+	} /* END public Mesa(int numJogs) */
 	
-			tab = new Tabuleiro(numJogadores);
-			//dp = new DadosPanel(tab.jogadores);
-			tab.setBounds(100, 100, 600, 600);
-			//dp.setBounds(20, 700, 150, 100);
-			add(tab);
-			//add(dp);
-		}
-	
+	/* Desenha as imagens */
 	public void paint(Graphics g)
 	{
 		super.paint(g);
+		
+		/*Quando mostraDados for verdade */
 		if(mostraDados == true)
 		{
-			for(int n = 0; n < 2; n++){
-				g.drawImage(imagensDados[valores[n] - 1], 800+(150*n), 250, 75, 75, null);
-			}
+			for(int n = 0; n < 2; n++)
+				g.drawImage(imagensDados[qtdDados[n] - 1], 800+(150*n), 250, 75, 75, null);
+			
 			//if (correnteLugar == true){
-			//	g.drawImage(CartaLugar[PosCorrente - 1],800, 350, 150,200,null);
+			//g.drawImage(CartaLugar[PosCorrente - 1],800, 350, 150,200,null);
 			//}
 			//if (correnteChance == true){
-				g.drawImage(CartaChance[VirarCarta()],800, 350, 150,200,null);
+			g.drawImage(cartaChance[VirarCarta()],800, 350, 150,200,null);
 			//}
 			
-		}
+		} /* end if */
 		
-	}
+	} /* END public void paint(Graphics g) */
 	
 	
+	/* Randomizacao do valor do dado */
 	public int JogarDados()
 	{
-		int r = 0;
+		int res = 0;
 		for(int n = 0; n < 2; n++){
-			valores[n] = random.nextInt(6) + 1;
-			r+=valores[n];
-			System.out.println(valores[n]);
+			qtdDados[n] = ranDado.nextInt(6) + 1;
+			res+=qtdDados[n];
+			System.out.println(qtdDados[n]);
 		}
-
-		return r;
-	}
+		return res;
+	} /*END public int JogarDados() */
 	
+	/* Randomizacao do valor da carta */
 	public int VirarCarta()
 	{
-		int res = sorte.nextInt(30); 
+		int res = ranChance.nextInt(30); 
 		System.out.println(res);
 		return res;
-	}
+	} /*END public int VirarCarta() */
 	
+	/* Classe do botao de jogar dado */
 	public class jogarDadosButton_Click implements ActionListener
 	{
+		/* Implementa acao do jogar dado */
 		public void actionPerformed(ActionEvent e)
 		{
-			int r = JogarDados();
-			tab.jogadores[JogCorrente].move(r);
+			int resDado = JogarDados();
+			
+			tab.jogadores[jogCorr].move(resDado);
+			
 			repaint();
+			
 			mostraDados=true;
-			PosCorrente = tab.jogadores[JogCorrente].retornaPos();
+			
+			posCorr = tab.jogadores[jogCorr].retornaPos();
+			
 			/*if (binSearch(posLugar, PosCorrente) == -1){
 				correnteLugar = true;
 			}
@@ -246,9 +283,9 @@ public class Mesa extends JFrame
 			else correnteAuto = true;
 			*/
 			
-			
-	}
-	}
+		} /* END public void actionPerformed(ActionEvent e) */
+	} /* END jogarDadosButton_Click */
+	
 	/*
 	public static int binSearch (int vet, int pos){
 		int bottom = 0;
