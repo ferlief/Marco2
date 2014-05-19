@@ -61,6 +61,9 @@ public class Mesa extends JFrame
 	
 	JLabel Jogador6;
 	JLabel SaldoJ6;
+	
+	JLabel AutoMsg;
+	JButton AutoOK;
 
 	/* Inicializador da classe, recebendo quantidade de jogadores */
 	public Mesa(int numJogs)
@@ -232,6 +235,52 @@ public class Mesa extends JFrame
 				g.drawImage(cartaChance[VirarCarta()],800, 350, 150,200,null);
 				posCorrEChance = false;
 			}
+			if(posCorrEAuto == true)
+			{
+				if (posCorr == 0) {
+					AutoMsg = new JLabel("Ponto de Partida. Receba R$ 200,00");
+					AutoMsg.setBounds(800, 350, 300,50);
+					add(AutoMsg);
+					posCorrEAuto = false;
+					
+				}
+				else if (posCorr == 10) {
+						AutoMsg = new JLabel("Prisao!");
+						AutoMsg.setBounds(800, 350, 300,50);
+						add(AutoMsg);
+						posCorrEAuto = false;
+						
+						}
+					else if (posCorr == 18) {
+							AutoMsg = new JLabel("Lucros ou Dividendos. Receba R$ 200,00");
+							AutoMsg.setBounds(800, 350, 300,50);
+							add(AutoMsg);
+							posCorrEAuto = false;
+							
+						}
+						else if (posCorr == 20) {
+								AutoMsg = new JLabel("Parada Livre!");
+								AutoMsg.setBounds(800, 350, 300,50);
+								add(AutoMsg);
+								posCorrEAuto = false;
+								
+							}
+							else if (posCorr == 24) {
+									AutoMsg = new JLabel("Imposto de Renda. Pague R$ 200,00");
+									AutoMsg.setBounds(800, 350, 300,50);
+									add(AutoMsg);
+									posCorrEAuto = false;
+									
+								}
+								else
+								{
+										AutoMsg = new JLabel("Va a prisao!");
+										AutoMsg.setBounds(800, 350, 300,50);
+										add(AutoMsg);
+										posCorrEAuto = false;
+										
+								} /* end else */
+			} /* end if */
 			
 		} /* end if */
 		
@@ -264,6 +313,7 @@ public class Mesa extends JFrame
 		/* Implementa acao do jogar dado */
 		public void actionPerformed(ActionEvent e)
 		{
+			
 			int resDado = JogarDados();
 			
 			tab.jogadores[jogCorr].move(resDado);
@@ -274,23 +324,17 @@ public class Mesa extends JFrame
 			
 			posCorr = tab.jogadores[jogCorr].retornaPos();
 			
+			
 			if (posCorr==1||posCorr==3||posCorr==4||posCorr==5||posCorr==6||posCorr==7||posCorr==8||posCorr==9
 					||posCorr==11||posCorr==13||posCorr==14||posCorr==15||posCorr==17||posCorr==19||posCorr==21
-					||posCorr==23||posCorr==25||posCorr==26||posCorr==28||posCorr==29){
+					||posCorr==23||posCorr==25||posCorr==26||posCorr==28||posCorr==29||posCorr==31||posCorr==32
+					||posCorr==33||posCorr==34||posCorr==35||posCorr==36||posCorr==38||posCorr==39){
 				posCorrELugar = true;
 			}else if (posCorr==2||posCorr==12||posCorr==16||posCorr==22||posCorr==27||posCorr==37){
 				posCorrEChance = true;
-			}else posCorrEAuto = true;
+			}else 
+				posCorrEAuto = true;			
 			
-			
-			/*if (binSearch(posLugar, PosCorrente) == -1){
-				correnteLugar = true;
-			}
-			else if (binSearch(this.posChance,PosCorrente)== -1){
-				correnteChance = true;
-			}
-			else correnteAuto = true;
-			*/
 			
 		} /* END public void actionPerformed(ActionEvent e) */
 	} /* END jogarDadosButton_Click */
