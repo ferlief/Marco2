@@ -234,53 +234,43 @@ public class Mesa extends JFrame
 			if(posCorrEChance == true){
 				g.drawImage(cartaChance[VirarCarta()],800, 350, 150,200,null);
 				posCorrEChance = false;
-			} /* Erro: qnto mostradado é verdade, AutoMsg vai existir*/
+			}
 			if(posCorrEAuto == true)
 			{
 				if (posCorr == 0) {
-					AutoMsg = new JLabel("Ponto de Partida. Receba R$ 200,00");
-					AutoMsg.setBounds(800, 350, 300,50);
-					add(AutoMsg);
-					posCorrEAuto = false;
-					
+					g.drawString("Ponto de Partida. Receba R$ 200,00", 800, 350);
+					posCorrEAuto = false;					
 				}
 				else if (posCorr == 10) {
-						AutoMsg = new JLabel("Prisao!");
-						AutoMsg.setBounds(800, 350, 300,50);
-						add(AutoMsg);
-						posCorrEAuto = false;
-						
+						g.drawString("Prisao!", 800, 350);
+						posCorrEAuto = false;							
 						}
 					else if (posCorr == 18) {
-							AutoMsg = new JLabel("Lucros ou Dividendos. Receba R$ 200,00");
-							AutoMsg.setBounds(800, 350, 300,50);
-							add(AutoMsg);
+							g.drawString("Lucros ou Dividendos. Receba R$ 200,00", 800, 350);
 							posCorrEAuto = false;
 							
 						}
 						else if (posCorr == 20) {
-								AutoMsg = new JLabel("Parada Livre!");
-								AutoMsg.setBounds(800, 350, 300,50);
-								add(AutoMsg);
-								posCorrEAuto = false;
-								
+							g.drawString("Parada Livre!", 800, 350);
+							posCorrEAuto = false;								
 							}
 							else if (posCorr == 24) {
-									AutoMsg = new JLabel("Imposto de Renda. Pague R$ 200,00");
-									AutoMsg.setBounds(800, 350, 300,50);
-									add(AutoMsg);
-									posCorrEAuto = false;
-									
+								g.drawString("Imposto de Renda. Pague R$ 200,00", 800, 350);
+								posCorrEAuto = false;										
 								}
 								else
 								{
-										AutoMsg = new JLabel("Va a prisao!");
-										AutoMsg.setBounds(800, 350, 300,50);
-										add(AutoMsg);
-										posCorrEAuto = false;
+									g.drawString("Va a prisao!", 800, 350);
+									posCorrEAuto = false;
 										
-								} /* end else */
-			} /* end if */
+								}/* end else */
+
+			}/* end if */
+	
+			if(posCorrEAuto == true){
+				g.drawString("Teste", 800, 350);
+				posCorrEAuto = false;
+			}/* end if */
 			
 		} /* end if */
 		
@@ -333,9 +323,8 @@ public class Mesa extends JFrame
 			}else if (posCorr==2||posCorr==12||posCorr==16||posCorr==22||posCorr==27||posCorr==37){
 				posCorrEChance = true;
 			}else 
-				posCorrEAuto = true;			
-			
-			
+				posCorrEAuto = true;
+
 		} /* END public void actionPerformed(ActionEvent e) */
 	} /* END jogarDadosButton_Click */
 	
