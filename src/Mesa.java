@@ -15,12 +15,19 @@ public class Mesa extends JFrame
 	public int valores[];
 	int VJogador;
 	boolean mostraDados = false;
+	boolean correnteLugar = false;
+	boolean correnteChance = false;
+	boolean correnteAuto = false;
+	
 	Image imagensDados[];
 	Image CartaLugar[];
-	Image CartaChance;
+	Image CartaChance[];
 	Tabuleiro tab;
 	int JogCorrente = 0;
 	int PosCorrente = 0;
+	int posLugar[] = {1,3,4,5,6,7,8,9,11,13,14,15,17,19,21,23,25,26,28,29,31,32,33,34,35,36,38,39}; 
+	int posChance[] = {2,12,16,22,27,37};
+	int posAuto[] = {0,10,18,20,24,30};
 	//DadosPanel dp;
 	int x;
 
@@ -122,11 +129,28 @@ public class Mesa extends JFrame
 		SaldoJ6.setBounds(600,725,100,50);
 		add(SaldoJ6);
 		
+		
+		
 		random = new Random();
 		imagensDados = new Image[6];
 		valores = new int[2];
 		
 		CartaLugar = new Image[40];
+		
+		CartaChance = new Image[71];
+		
+		
+		for(int cont = 0; cont < 71; cont++)
+		{
+			String caminho3 = "img/chance"+(cont+1)+".png";
+				try
+				{
+					CartaChance[cont] = ImageIO.read(new File(caminho3));
+				}
+				catch (IOException e)
+				{
+				}
+		}
 		
 		for(int m = 0; m < 40; m++)
 		{
@@ -167,12 +191,18 @@ public class Mesa extends JFrame
 	{
 		super.paint(g);
 		if(mostraDados == true)
-			{
+		{
 			for(int n = 0; n < 2; n++){
 				g.drawImage(imagensDados[valores[n] - 1], 800+(150*n), 250, 75, 75, null);
 			}
-			g.drawImage(CartaLugar[PosCorrente-1],800, 350, 150,200,null);
-			}
+			//if (correnteLugar == true){
+				g.drawImage(CartaLugar[PosCorrente - 1],800, 350, 150,200,null);
+			//}
+			//if (correnteChance == true){
+			//	g.drawImage(CartaChance[0],800, 350, 150,200,null);
+			//}
+			
+		}
 		
 	}
 	
@@ -199,7 +229,41 @@ public class Mesa extends JFrame
 			repaint();
 			mostraDados=true;
 			PosCorrente = tab.jogadores[JogCorrente].retornaPos();
-		}
+			/*if (binSearch(posLugar, PosCorrente) == -1){
+				correnteLugar = true;
+			}
+			else if (binSearch(this.posChance,PosCorrente)== -1){
+				correnteChance = true;
+			}
+			else correnteAuto = true;
+			*/
+			
+			
 	}
-	
+	}
+	/*
+	public static int binSearch (int vet, int pos){
+		int bottom = 0;
+		int top = vet.lenght = 1;
+		int middle;
+		boolean found = false;
+		int location = -1;
+		
+		while (bottom<=top&&!found){
+			
+			middle = (bottom+top)/2;
+			
+			if (vet[middle]==pos){
+				found = true;
+				location = middle;
+			}else if (vet[middle]<pos){
+				bottom = middle +1;
+			}else {
+				top = middle -1;
+			}
+		}
+		return location;
+		
+	}
+	*/
 }
