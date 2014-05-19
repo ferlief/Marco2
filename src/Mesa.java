@@ -322,8 +322,9 @@ public class Mesa extends JFrame
 				posCorrELugar = true;
 			}else if (posCorr==2||posCorr==12||posCorr==16||posCorr==22||posCorr==27||posCorr==37){
 				posCorrEChance = true;
-			}else 
+			}else if (posCorr==0||posCorr==10||posCorr==18||posCorr==20||posCorr==24||posCorr==30){
 				posCorrEAuto = true;
+			} /* enf if*/
 
 		} /* END public void actionPerformed(ActionEvent e) */
 	} /* END jogarDadosButton_Click */
