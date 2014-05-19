@@ -234,7 +234,7 @@ public class Mesa extends JFrame
 			if(posCorrEChance == true){
 				g.drawImage(cartaChance[VirarCarta()],800, 350, 150,200,null);
 				posCorrEChance = false;
-			}
+			} /* Erro: qnto mostradado é verdade, AutoMsg vai existir*/
 			if(posCorrEAuto == true)
 			{
 				if (posCorr == 0) {
