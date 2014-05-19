@@ -11,6 +11,7 @@ import javax.swing.*;
 public class Mesa extends JFrame 
 {
 	Random random;
+	Random sorte;
 
 	public int valores[];
 	int VJogador;
@@ -132,15 +133,16 @@ public class Mesa extends JFrame
 		
 		
 		random = new Random();
+		sorte = new Random();
 		imagensDados = new Image[6];
 		valores = new int[2];
 		
 		CartaLugar = new Image[40];
 		
-		CartaChance = new Image[71];
+		CartaChance = new Image[30];
 		
 		
-		for(int cont = 0; cont < 71; cont++)
+		for(int cont = 0; cont < 30; cont++)
 		{
 			String caminho3 = "img/chance"+(cont+1)+".png";
 				try
@@ -196,10 +198,10 @@ public class Mesa extends JFrame
 				g.drawImage(imagensDados[valores[n] - 1], 800+(150*n), 250, 75, 75, null);
 			}
 			//if (correnteLugar == true){
-				g.drawImage(CartaLugar[PosCorrente - 1],800, 350, 150,200,null);
+			//	g.drawImage(CartaLugar[PosCorrente - 1],800, 350, 150,200,null);
 			//}
 			//if (correnteChance == true){
-			//	g.drawImage(CartaChance[0],800, 350, 150,200,null);
+				g.drawImage(CartaChance[VirarCarta()],800, 350, 150,200,null);
 			//}
 			
 		}
@@ -219,6 +221,12 @@ public class Mesa extends JFrame
 		return r;
 	}
 	
+	public int VirarCarta()
+	{
+		int res = sorte.nextInt(30); 
+		System.out.println(res);
+		return res;
+	}
 	
 	public class jogarDadosButton_Click implements ActionListener
 	{
