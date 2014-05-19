@@ -32,6 +32,7 @@ public class Mesa extends JFrame
 	int jogCorr = 0;
 	int posCorr = 0;
 	
+
 	/* Cricao dos itens de titulos */
 	JLabel Turno;
 	JLabel JogadorNum;
@@ -214,6 +215,8 @@ public class Mesa extends JFrame
 	public void paint(Graphics g)
 	{
 		super.paint(g);
+				
+		g.drawString(".", 900, 350);
 		
 		/*Quando mostraDados for verdade */
 		if(mostraDados == true)
@@ -304,6 +307,7 @@ public class Mesa extends JFrame
 				posCorrEChance = true;
 			}else if (posCorr==0||posCorr==10||posCorr==18||posCorr==20||posCorr==24||posCorr==30){
 				posCorrEAuto = true;
+				
 			} /* enf if*/
 
 		} /* END public void actionPerformed(ActionEvent e) */
