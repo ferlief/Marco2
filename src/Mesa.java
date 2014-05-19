@@ -16,8 +16,11 @@ public class Mesa extends JFrame
 	int VJogador;
 	boolean mostraDados = false;
 	Image imagensDados[];
+	Image CartaLugar[];
+	Image CartaChance;
 	Tabuleiro tab;
 	int JogCorrente = 0;
+	int PosCorrente = 0;
 	//DadosPanel dp;
 	int x;
 
@@ -122,37 +125,53 @@ public class Mesa extends JFrame
 		random = new Random();
 		imagensDados = new Image[6];
 		valores = new int[2];
-
-		JMenuBar MenuBar = new JMenuBar();
-        setJMenuBar(MenuBar);
-        
-	for(int n = 0; n < 6; n++)
-	{
-		String caminho = "img/Dice"+(n+1)+".png";
-			try
-			{
-				imagensDados[n] = ImageIO.read(new File(caminho));
+		
+		CartaLugar = new Image[40];
+		
+		for(int m = 0; m < 40; m++)
+		{
+			if (m+1==2||m+1==10||m+1==12||m+1==16||m+1==18||m+1==20||m+1==22||m+1==24||m+1==27||m+1==30||m+1==37){
+				continue;
 			}
-			catch (IOException e)
-			{
-			}
+			String caminho1 = "img/Lugar"+(m+1)+".png";
+				try
+				{
+					CartaLugar[m] = ImageIO.read(new File(caminho1));
+				}
+				catch (IOException e)
+				{
+				}
 		}
-
-		tab = new Tabuleiro(numJogadores);
-		//dp = new DadosPanel(tab.jogadores);
-		tab.setBounds(100, 100, 600, 600);
-		//dp.setBounds(20, 700, 150, 100);
-		add(tab);
-		//add(dp);
-	}
+        
+		for(int n = 0; n < 6; n++)
+		{
+			String caminho2 = "img/Dice"+(n+1)+".png";
+				try
+				{
+					imagensDados[n] = ImageIO.read(new File(caminho2));
+				}
+				catch (IOException e)
+				{
+				}
+		}
+	
+			tab = new Tabuleiro(numJogadores);
+			//dp = new DadosPanel(tab.jogadores);
+			tab.setBounds(100, 100, 600, 600);
+			//dp.setBounds(20, 700, 150, 100);
+			add(tab);
+			//add(dp);
+		}
 	
 	public void paint(Graphics g)
 	{
 		super.paint(g);
 		if(mostraDados == true)
 			{
-			for(int n = 0; n < 2; n++)
+			for(int n = 0; n < 2; n++){
 				g.drawImage(imagensDados[valores[n] - 1], 800+(150*n), 250, 75, 75, null);
+			}
+			g.drawImage(CartaLugar[PosCorrente-1],800, 350, 150,200,null);
 			}
 		
 	}
@@ -179,6 +198,7 @@ public class Mesa extends JFrame
 			tab.jogadores[JogCorrente].move(r);
 			repaint();
 			mostraDados=true;
+			PosCorrente = tab.jogadores[JogCorrente].retornaPos();
 		}
 	}
 	

@@ -8,8 +8,8 @@ public class Jogador {
 	public String nome;
 	public int _x, _y;
 	
-	private int pos;
-	private int xi, yi;
+	public int pos;
+	public int xi, yi;
 	
 	public Jogador() {
 		pos = 0;
@@ -65,5 +65,9 @@ public class Jogador {
 			_x = xi + 50 * (pos - 30);
 			_y = yi;
 		}
+	}
+	public int retornaPos (){
+		return this.pos;
+		
 	}
 }
