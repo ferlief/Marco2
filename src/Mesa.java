@@ -32,12 +32,6 @@ public class Mesa extends JFrame
 	int jogCorr = 0;
 	int posCorr = 0;
 	
-	/* Vetores que informam a categoria das casas do tabuleiro */
-	int vetPosLugar[] = {1,3,4,5,6,7,8,9,11,13,14,15,17,19,21,23,25,26,28,29,
-			31,32,33,34,35,36,38,39}; /* Cartas de localizacao ou empresa */ 
-	int vetPosChance[] = {2,12,16,22,27,37}; /* Cartas de sorte ou reves */
-	int vetPosAuto[] = {0,10,18,20,24,30}; /* Cartas de acao automatica a ser executada */
-
 	/* Cricao dos itens de titulos */
 	JLabel Turno;
 	JLabel JogadorNum;
@@ -235,43 +229,29 @@ public class Mesa extends JFrame
 				g.drawImage(cartaChance[VirarCarta()],800, 350, 150,200,null);
 				posCorrEChance = false;
 			}
-			if(posCorrEAuto == true)
-			{
+			if(posCorrEAuto == true){
 				if (posCorr == 0) {
 					g.drawString("Ponto de Partida. Receba R$ 200,00", 800, 350);
-					posCorrEAuto = false;					
-				}
-				else if (posCorr == 10) {
-						g.drawString("Prisao!", 800, 350);
-						posCorrEAuto = false;							
+				}else if (posCorr == 10) {
+						g.drawString("Prisao!", 800, 350);	
 						}
 					else if (posCorr == 18) {
 							g.drawString("Lucros ou Dividendos. Receba R$ 200,00", 800, 350);
-							posCorrEAuto = false;
-							
 						}
 						else if (posCorr == 20) {
 							g.drawString("Parada Livre!", 800, 350);
-							posCorrEAuto = false;								
 							}
 							else if (posCorr == 24) {
-								g.drawString("Imposto de Renda. Pague R$ 200,00", 800, 350);
-								posCorrEAuto = false;										
+								g.drawString("Imposto de Renda. Pague R$ 200,00", 800, 350);								
 								}
-								else
-								{
+								else 
 									g.drawString("Va a prisao!", 800, 350);
-									posCorrEAuto = false;
 										
-								}/* end else */
+				
+				posCorrEAuto = false;
 
 			}/* end if */
-	
-			if(posCorrEAuto == true){
-				g.drawString("Teste", 800, 350);
-				posCorrEAuto = false;
-			}/* end if */
-			
+				
 		} /* end if */
 		
 	} /* END public void paint(Graphics g) */
@@ -329,29 +309,4 @@ public class Mesa extends JFrame
 		} /* END public void actionPerformed(ActionEvent e) */
 	} /* END jogarDadosButton_Click */
 	
-	/*
-	public static int binSearch (int vet, int pos){
-		int bottom = 0;
-		int top = vet.lenght = 1;
-		int middle;
-		boolean found = false;
-		int location = -1;
-		
-		while (bottom<=top&&!found){
-			
-			middle = (bottom+top)/2;
-			
-			if (vet[middle]==pos){
-				found = true;
-				location = middle;
-			}else if (vet[middle]<pos){
-				bottom = middle +1;
-			}else {
-				top = middle -1;
-			}
-		}
-		return location;
-		
-	}
-	*/
 }
