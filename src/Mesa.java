@@ -18,10 +18,10 @@ public class Mesa extends JFrame
 	boolean mostraDados = false;
 	public int numJogadores;
 	
-	Territorio CartaLugar[];
+	Territorio cartaLugar[];
 	Territorio cartaChance[];
 	
-	Image CartaAtual;
+	Image cartaAtual;
 
 	Image imagensDados[];
 	Tabuleiro tab;
@@ -137,7 +137,7 @@ public class Mesa extends JFrame
 		}
 		cartasTiradasContador = 0;
 
-		CartaLugar = new Territorio[40];
+		cartaLugar = new Territorio[40];
 		cartaChance = new Territorio[30];
 		
 		/* Carrega imagens das cartas de sorte ou reves */
@@ -158,31 +158,39 @@ public class Mesa extends JFrame
 		for(int m = 0; m < 40; m++)
 		{
 			
-			if (m==0||m==10||m==18||m==20||m==24||m==30){
-				CartaLugar[m].tipo = Territorio.Tipo.comeco;
+			cartaLugar[m] = new Territorio(1000, 100, Territorio.Tipo.propriedade);
+			
+			if (m==24){
+				cartaLugar[m].tipo = Territorio.Tipo.imposto;
+				continue;
+			}
+			if (m==30){
+				cartaLugar[m].tipo = Territorio.Tipo.vaParaPrisao;
+				continue;
+			}
+			if (m==10||m==20){
+				cartaLugar[m].tipo = Territorio.Tipo.neutro;
+				continue;
+			}
+			if (m==0||m==18){
+				cartaLugar[m].tipo = Territorio.Tipo.bonus;
 				continue;
 			}
 			if (m==2||m==12||m==16||m==22||m==27||m==37){
-				//chance
+				cartaLugar[m].tipo = Territorio.Tipo.cartaSorte;
 				continue;
 			}
 			
-			CartaLugar[m] = new Territorio(1000, 100, Territorio.Tipo.propriedade);
+			cartaLugar[m] = new Territorio(1000, 100, Territorio.Tipo.propriedade);
 			
-			if (m+1==2||m+1==10||m+1==12||m+1==16||m+1==18||m+1==20||m+1==22||m+1==24||m+1==27||m+1==30||m+1==37||m==39){
-				CartaLugar[m].tipo = Territorio.Tipo.comeco;
-				continue;
-			}
-			
-			
-			String caminho1 = "img/Lugar"+(m+1)+".png";
+			String caminho = "img/Lugar"+m+".png";
 			try
 			{
-				CartaLugar[m].img = ImageIO.read(new File(caminho1));
+				cartaLugar[m].img = ImageIO.read(new File(caminho));
 			}
 			catch (IOException e)
 			{
-				System.out.println(caminho1);
+				System.out.println(caminho);
 			}
 		}
 		
@@ -266,7 +274,7 @@ public class Mesa extends JFrame
 		{
 			for(int n = 0; n < 2; n++)
 				g.drawImage(imagensDados[dadosAtuais[n] - 1], 800+(150*n), 200, 100, 100, null);
-			g.drawImage(CartaLugar[tab.jogadores[tab.jogadorAtual].pos-1].img,800, 350, 150,200,null);
+			g.drawImage(cartaAtual,800, 350, 150,200,null);
 			g.drawImage(tab.jogadores[tab.jogadorAtual].img, 750, 175, null );
 		}
 
@@ -337,7 +345,7 @@ public class Mesa extends JFrame
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			if(tab.jogadores[tab.jogadorAtual].territorioAtual.tipo == Territorio.Tipo.propiedade &&
+			if(tab.jogadores[tab.jogadorAtual].territorioAtual.tipo == Territorio.Tipo.propriedade &&
 					tab.jogadores[tab.jogadorAtual].territorioAtual.preco < tab.jogadores[tab.jogadorAtual].dinheiro &&
 					tab.jogadores[tab.jogadorAtual].territorioAtual.dono == null) {
 				tab.comprarTerreno(tab.jogadores[tab.jogadorAtual], tab.jogadores[tab.jogadorAtual].territorioAtual);
@@ -353,25 +361,29 @@ public class Mesa extends JFrame
 		{
 			int r = jogarDados();
 			tab.jogadores[tab.jogadorAtual].move(r);
-			tab.jogadores[tab.jogadorAtual].territorioAtual = CartaLugar[tab.jogadores[tab.jogadorAtual].pos-1];
-			int posCorr = tab.jogadores[tab.jogadorAtual].pos;
-			
-			
+			tab.jogadores[tab.jogadorAtual].territorioAtual = cartaLugar[tab.jogadores[tab.jogadorAtual].pos-1];
 
-			
 			switch(tab.jogadores[tab.jogadorAtual].territorioAtual.tipo)
 			{
 			case cartaSorte: 
+				cartaAtual = cartaChance[VirarCarta()].img;
 				mostrarCartaSorte();
 				break;
-			case propiedade: 
+			case propriedade:
+				cartaAtual = tab.jogadores[tab.jogadorAtual].territorioAtual.img;
 				mostrarCartaPropiedade();
 				break;
-			case prisao:
+			case vaParaPrisao:
 				mostrarMensagem("Voce visitou a prisao");
 				break;
-			case comeco:
+			case bonus:
 				mostrarMensagem("Voce passou pelo comeco.");
+				break;
+			case imposto:
+				mostrarMensagem("Imposto.");
+				break;
+			case neutro:
+				mostrarMensagem("Neutro.");
 				break;
 			}
 			repaint();
