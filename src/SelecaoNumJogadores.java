@@ -64,7 +64,7 @@ public class SelecaoNumJogadores extends JFrame
 		}
 		public void actionPerformed(ActionEvent e)
 		{
-			Mesa f = new Mesa(this.numJogadores);
+			Mesa f = new Mesa(this.numJogadores, "Banco Imobiliário");
 			f.setVisible(true);
 			setVisible(false);
 		}

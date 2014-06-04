@@ -4,24 +4,27 @@ import java.io.*;
 import java.awt.*;
 @SuppressWarnings("serial")
 public class Tabuleiro extends JPanel{
+	//JLabel imageTab = new JLabel();
 	
+
 	Image tab;
 	Jogador[] jogadores;
-	int numJogadores;
-	public Tabuleiro(int num){
+	int jogadorAtual;
+	Territorio[] territorios;
+	public Tabuleiro(){
 		Toolkit tk=Toolkit.getDefaultToolkit();
 		Dimension screenSize=tk.getScreenSize();
 		int sl = (screenSize.width)/2;
 		int sa = (screenSize.height);
-		this.numJogadores=num;
 		jogadores = new Jogador[6];
-		
-		jogadores[0] = new Jogador(55, 10);
-		jogadores[1] = new Jogador(45, 15);
-		jogadores[2] = new Jogador(35, 20);
-		jogadores[3] = new Jogador(55, 25);
-		jogadores[4] = new Jogador(45, 30);
-		jogadores[5] = new Jogador(35, 35);
+		territorios = new Territorio[40];
+		jogadores[0] = new Jogador(60, 20);
+		jogadores[1] = new Jogador(45, 5);
+		jogadores[2] = new Jogador(36, 12);
+		jogadores[3] = new Jogador(56, 32);
+		jogadores[4] = new Jogador(21, 15);
+		jogadores[5] = new Jogador(33, 25);
+		jogadorAtual = 0;
 		
 		try
 		{
@@ -34,7 +37,6 @@ public class Tabuleiro extends JPanel{
 			jogadores[3].img = ImageIO.read(new File("img/orange_pin.png"));
 			jogadores[4].img = ImageIO.read(new File("img/yellow_pin.png"));
 			jogadores[5].img = ImageIO.read(new File("img/purple_pin.png"));
-		
 
 		}
 		catch(IOException e){
@@ -44,7 +46,7 @@ public class Tabuleiro extends JPanel{
 	{ 		
 		super.paintComponent(g);
 		g.drawImage(tab, 0, 0, 600, 600, null);
-		for(int i = 0; i < numJogadores; i++)
+		for(int i = 0; i < jogadores.length; i++)
 		{
 			if(jogadores[i]!=null && jogadores[i].img!=null)
 			{
@@ -52,4 +54,11 @@ public class Tabuleiro extends JPanel{
 			}
 		}
 	} 
+	
+	public void comprarTerreno(Jogador j, Territorio t) {
+		j.dinheiro -= t.preco;
+		t.dono = j;
+		j.propiedades[j.numPropiedades] = t;
+		j.numPropiedades++;
+	}
 }

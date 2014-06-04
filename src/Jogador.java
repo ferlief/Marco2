@@ -7,9 +7,13 @@ public class Jogador {
 	public Image img;
 	public String nome;
 	public int _x, _y;
+	public int dinheiro;
+	public Territorio[] propiedades;
+	public Territorio territorioAtual;
+	public int numPropiedades = 0;
 	
 	public int pos;
-	public int xi, yi;
+	private int xi, yi;
 	
 	public Jogador() {
 		pos = 0;
@@ -18,7 +22,9 @@ public class Jogador {
 		xi = 0;
 		yi = 0;
 		this.move(0);
+		dinheiro = 5000;
 		cont++;
+		propiedades = new Territorio[40];
 	}
 	
 	public Jogador(int x, int y) {
@@ -30,6 +36,8 @@ public class Jogador {
 		this.move(0);
 		cont++;
 		nome = "Jogador " + cont;
+		propiedades = new Territorio[40];
+		dinheiro = 5000;
 	}
 	
 	public Jogador(int x, int y, String nome) {
@@ -41,6 +49,8 @@ public class Jogador {
 		this.nome = nome;
 		this.move(0);
 		cont++;
+		propiedades = new Territorio[40];
+		dinheiro = 5000;
 	}
 	
 	
@@ -65,9 +75,5 @@ public class Jogador {
 			_x = xi + 50 * (pos - 30);
 			_y = yi;
 		}
-	}
-	public int retornaPos (){
-		return this.pos;
-		
 	}
 }
