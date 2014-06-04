@@ -8,7 +8,7 @@ public class Territorio {
 	public Jogador dono;
 	public Image img;
 	
-	public enum Tipo { propiedade, cartaSorte, prisao, comeco }
+	public enum Tipo { propriedade, cartaSorte, prisao, comeco, imposto, lucroDiv }
 	
 	Territorio() {}
 	

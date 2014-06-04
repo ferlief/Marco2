@@ -17,11 +17,19 @@ public class Mesa extends JFrame
 	public int dadosAtuais[];
 	boolean mostraDados = false;
 	public int numJogadores;
+	
 	Territorio CartaLugar[];
-	Image CartaChance;
+	Territorio cartaChance[];
+	
+	Image CartaAtual;
+
 	Image imagensDados[];
 	Tabuleiro tab;
 	DadosPanel dp;
+	
+	
+	public int cartasTiradas[];
+	public int cartasTiradasContador;
 
 	public int valores[];
 	int VJogador;
@@ -122,12 +130,45 @@ public class Mesa extends JFrame
 		random = new Random();
 		imagensDados = new Image[6];
 		dadosAtuais = new int[2];
+		cartasTiradas = new int[30];
+		for(int i = 0; i < 30; i++)
+		{
+			cartasTiradas[i] = 0;
+		}
+		cartasTiradasContador = 0;
 
 		CartaLugar = new Territorio[40];
+		cartaChance = new Territorio[30];
+		
+		/* Carrega imagens das cartas de sorte ou reves */
+		for(int cont = 0; cont < 30; cont++)
+		{
+			cartaChance[cont] = new Territorio();
+			String caminho3 = "img/chance"+(cont+1)+".png";
+				try
+				{
+					cartaChance[cont].img = ImageIO.read(new File(caminho3));
+				}
+				catch (IOException e)
+				{
+				}
+		} /*end for*/
+		
 		
 		for(int m = 0; m < 40; m++)
 		{
-			CartaLugar[m] = new Territorio(1000, 100, Territorio.Tipo.propiedade);
+			
+			if (m==0||m==10||m==18||m==20||m==24||m==30){
+				CartaLugar[m].tipo = Territorio.Tipo.comeco;
+				continue;
+			}
+			if (m==2||m==12||m==16||m==22||m==27||m==37){
+				//chance
+				continue;
+			}
+			
+			CartaLugar[m] = new Territorio(1000, 100, Territorio.Tipo.propriedade);
+			
 			if (m+1==2||m+1==10||m+1==12||m+1==16||m+1==18||m+1==20||m+1==22||m+1==24||m+1==27||m+1==30||m+1==37||m==39){
 				CartaLugar[m].tipo = Territorio.Tipo.comeco;
 				continue;
@@ -259,6 +300,38 @@ public class Mesa extends JFrame
 	{
 		
 	}
+	
+	/* Randomizacao do valor da carta */
+	public int VirarCarta()
+	{
+		int res = random.nextInt(30);
+		while(Contem(res))
+		{
+			res = random.nextInt(30);
+		}
+		
+		cartasTiradas[cartasTiradasContador] = res;
+		cartasTiradasContador++;
+		
+		if(cartasTiradasContador == 30)
+		{
+			cartasTiradasContador = 0;
+		}
+		
+		return res;
+	} /*END public int VirarCarta() */
+	
+	public boolean Contem( int x ) 
+	{
+		for(int i = 0; i < cartasTiradasContador; i++)
+		{
+			if(cartasTiradas[i] == x)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public class comprarPropiedadeButton_Click implements ActionListener
 	{
@@ -281,6 +354,11 @@ public class Mesa extends JFrame
 			int r = jogarDados();
 			tab.jogadores[tab.jogadorAtual].move(r);
 			tab.jogadores[tab.jogadorAtual].territorioAtual = CartaLugar[tab.jogadores[tab.jogadorAtual].pos-1];
+			int posCorr = tab.jogadores[tab.jogadorAtual].pos;
+			
+			
+
+			
 			switch(tab.jogadores[tab.jogadorAtual].territorioAtual.tipo)
 			{
 			case cartaSorte: 
@@ -300,5 +378,4 @@ public class Mesa extends JFrame
 			mostraDados=true;
 		}
 	}
-	
 }
