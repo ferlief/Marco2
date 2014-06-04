@@ -4,40 +4,32 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class Mesa extends JFrame 
 {
-	/* Variaveis de randomizacao */
-	Random ranDado; /* Referente ao numero tirado nos dois dados */
-	Random ranChance; /* Referente a carta de sorte que sera virada */
-
-	public int qtdDados[]; /* Quantidade de dados */
-	
-	/* Variaveis booleanas */
+	Random random;
+	JButton jogarDado;
+	JButton comprarPropiedade;
+	public int dadosAtuais[];
 	boolean mostraDados = false;
-	boolean posCorrELugar = false;
-	boolean posCorrEChance = false;
-	boolean posCorrEAuto = false;
-	
-	/* Itens que serao carregados na interface */
+	public int numJogadores;
+	Territorio CartaLugar[];
+	Image CartaChance;
 	Image imagensDados[];
-	Image cartaLugar[];
-	Image cartaChance[];
 	Tabuleiro tab;
-	
-	/* Variaveis de posicao e vetor de posicao corrente */
-	int jogCorr = 0;
-	int posCorr = 0;
-	
+	DadosPanel dp;
 
-	/* Cricao dos itens de titulos */
+	public int valores[];
+	int VJogador;
+	int JogCorrente = 0;
+
 	JLabel Turno;
 	JLabel JogadorNum;
 	JLabel JogadorNumSaldo;
-	JButton jogarDado;
 	
 	JLabel Jogador1;
 	JLabel SaldoJ1;
@@ -56,261 +48,257 @@ public class Mesa extends JFrame
 	
 	JLabel Jogador6;
 	JLabel SaldoJ6;
-	
-	JLabel AutoMsg;
-	JButton AutoOK;
 
-	/* Inicializador da classe, recebendo quantidade de jogadores */
-	public Mesa(int numJogs)
+	public Mesa(int numJogadores, String s)
 	{
+		super(s);
+		this.numJogadores = numJogadores;
 		setLayout(null);
 		setBackground(Color.white);
 		Container c = getContentPane();
 		c.setBackground(Color.white);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		tab = new Tabuleiro();
+		dp = new DadosPanel(tab.jogadores);
 		
-		/* Itens da area direita ao tabuleiro */
+		jogarDado = new JButton("Jogar Dados");
+		jogarDado.setBounds(750,50,120,30);
+		jogarDado.addActionListener(new jogarDadosButton_Click());
+		add(jogarDado);
+		
+		comprarPropiedade = new JButton("Comprar Propiedade");
+		comprarPropiedade.setBounds(950,50,220,30);
+		comprarPropiedade.addActionListener(new comprarPropiedadeButton_Click());
+		add(comprarPropiedade);
+
 		Turno = new JLabel("Turno");
 		Turno.setBounds(750,50,100,50);
 		add(Turno);
 		
-		JogadorNum = new JLabel("Jogador "+(jogCorr+1));
+		JogadorNum = new JLabel("Jogador Atual");
 		JogadorNum.setBounds(750,75,100,50);
 		add(JogadorNum);
 		
-		JogadorNumSaldo = new JLabel("R$5.000,00");
+		JogadorNumSaldo = new JLabel(String.format("R$%d", tab.jogadores[tab.jogadorAtual].dinheiro));
 		JogadorNumSaldo.setBounds(750,100,100,50);
 		add(JogadorNumSaldo);
 		
-		jogarDado = new JButton("Jogar Dados");
-		jogarDado.setBounds(750,150,120,30);
-		jogarDado.addActionListener(new jogarDadosButton_Click());
-		add(jogarDado);
-		
-		/* Mostra para cada jogador o numero jogador e seu saldo, 
-		 * itens da area inferior ao tabuleiro */
 		Jogador1 = new JLabel("Jogador 1");
 		Jogador1.setBounds(100,700,100,50);
-		add(Jogador1);
 	
-		SaldoJ1 = new JLabel("R$ 5.000,00");
+		SaldoJ1 = new JLabel(String.format("R$%d", tab.jogadores[0].dinheiro));
 		SaldoJ1.setBounds(100,725,100,50);
-		add(SaldoJ1);
-
+		
 		Jogador2 = new JLabel("Jogador 2");
 		Jogador2.setBounds(200,700,100,50);
-		add(Jogador2);
 	
-		SaldoJ2 = new JLabel("R$ 5.000,00");
+		SaldoJ2 = new JLabel(String.format("R$%d", tab.jogadores[1].dinheiro));
 		SaldoJ2.setBounds(200,725,100,50);
-		add(SaldoJ2);
 		
-		/* Mostra jogador e saldo para demais jogadores se existirem*/
-		if (numJogs >2)
-		{			
-			Jogador3 = new JLabel("Jogador 3");
-			Jogador3.setBounds(300,700,100,50);
-			add(Jogador3);
+		Jogador3 = new JLabel("Jogador 3");
+		Jogador3.setBounds(300,700,100,50);
+	
+		SaldoJ3 = new JLabel(String.format("R$%d", tab.jogadores[2].dinheiro));
+		SaldoJ3.setBounds(300,725,100,50);
 		
-			SaldoJ3 = new JLabel("R$ 5.000,00");
-			SaldoJ3.setBounds(300,725,100,50);
-			add(SaldoJ3);
-			
-			if (numJogs >3)
-			{
-				Jogador4 = new JLabel("Jogador 4");
-				Jogador4.setBounds(400,700,100,50);
-				add(Jogador4);
-			
-				SaldoJ4 = new JLabel("R$ 5.000,00");
-				SaldoJ4.setBounds(400,725,100,50);
-				add(SaldoJ4);
-				
-				if (numJogs >4)
-				{
-					Jogador5 = new JLabel("Jogador 5");
-					Jogador5.setBounds(500,700,100,50);
-					add(Jogador5);
-				
-					SaldoJ5 = new JLabel("R$ 5.000,00");
-					SaldoJ5.setBounds(500,725,100,50);
-					add(SaldoJ5);
-					
-					if (numJogs >5){
-						Jogador6 = new JLabel("Jogador 6");
-						Jogador6.setBounds(600,700,100,50);
-						add(Jogador6);
-					
-						SaldoJ6= new JLabel("R$ 5.000,00");
-						SaldoJ6.setBounds(600,725,100,50);
-						add(SaldoJ6);
-					}
-				}
-			}
-			
-		} /* end if */
+		Jogador4 = new JLabel("Jogador 4");
+		Jogador4.setBounds(400,700,100,50);
+	
+		SaldoJ4 = new JLabel(String.format("R$%d", tab.jogadores[3].dinheiro));
+		SaldoJ4.setBounds(400,725,100,50);
 		
-		/*Cria objetos de randomizacao*/
-		ranDado = new Random();
-		ranChance = new Random();
+		Jogador5 = new JLabel("Jogador 5");
+		Jogador5.setBounds(500,700,100,50);
+	
+		SaldoJ5 = new JLabel(String.format("R$%d", tab.jogadores[4].dinheiro));
+		SaldoJ5.setBounds(500,725,100,50);
 		
-		/* cria imagens*/
+		Jogador6 = new JLabel("Jogador 6");
+		Jogador6.setBounds(600,700,100,50);
+	
+		SaldoJ6= new JLabel(String.format("R$%d", tab.jogadores[5].dinheiro));
+		SaldoJ6.setBounds(600,725,100,50);
+		
+		random = new Random();
 		imagensDados = new Image[6];
-		qtdDados = new int[2];
-		cartaLugar = new Image[40];		
-		cartaChance = new Image[30];
-				
-		/* Carrega imagens das cartas de sorte ou reves */
-		for(int cont = 0; cont < 30; cont++)
-		{
-			String caminho3 = "img/chance"+(cont+1)+".png";
-				try
-				{
-					cartaChance[cont] = ImageIO.read(new File(caminho3));
-				}
-				catch (IOException e)
-				{
-				}
-		} /*end for*/
+		dadosAtuais = new int[2];
+
+		CartaLugar = new Territorio[40];
 		
-		/* Carrega imagens das cartas de localizacao ou empresa, com espacos vazios*/
 		for(int m = 0; m < 40; m++)
 		{
-			if (m==0||m==10||m==18||m==20||m==24||m==30){
+			CartaLugar[m] = new Territorio(1000, 100, Territorio.Tipo.propiedade);
+			if (m+1==2||m+1==10||m+1==12||m+1==16||m+1==18||m+1==20||m+1==22||m+1==24||m+1==27||m+1==30||m+1==37||m==39){
+				CartaLugar[m].tipo = Territorio.Tipo.comeco;
 				continue;
 			}
-			if (m==2||m==12||m==16||m==22||m==27||m==37){
-				continue;
+			
+			
+			String caminho1 = "img/Lugar"+(m+1)+".png";
+			try
+			{
+				CartaLugar[m].img = ImageIO.read(new File(caminho1));
 			}
-			String caminho1 = "img/Lugar"+(m)+".png";
-				try
-				{
-					cartaLugar[m] = ImageIO.read(new File(caminho1));
-				}
-				catch (IOException e)
-				{
-				}
-		} /* end for */
+			catch (IOException e)
+			{
+				System.out.println(caminho1);
+			}
+		}
+		
+		JMenuBar MenuBar = new JMenuBar();
+        setJMenuBar(MenuBar);
         
-		/* Carrega imagens dos dados */
 		for(int n = 0; n < 6; n++)
 		{
-			String caminho2 = "img/Dice"+(n+1)+".png";
-				try
-				{
-					imagensDados[n] = ImageIO.read(new File(caminho2));
-				}
-				catch (IOException e)
-				{
-				}
-		} /* end for */
-		
-		/* Carrega imagem do tabuleiro com os pinos referentes aos jogadores */
-		tab = new Tabuleiro(numJogs);
+			String caminho = "img/Dice"+(n+1)+".png";
+			try
+			{
+				imagensDados[n] = ImageIO.read(new File(caminho));
+			}
+			catch (IOException e)
+			{
+			}
+		}
+
 		tab.setBounds(100, 100, 600, 600);
+		dp.setBounds(20, 700, 150, 100);
 		add(tab);
-	} /* END public Mesa(int numJogs) */
-	
-	/* Desenha as imagens */
+		//add(dp);
+		switch(this.numJogadores)
+		{
+		case 6:
+			add(Jogador6);
+			add(SaldoJ6);
+			add(Jogador5);
+			add(SaldoJ5);
+			add(Jogador4);
+			add(SaldoJ4);
+			add(Jogador3);
+			add(SaldoJ3);
+			add(Jogador1);
+			add(SaldoJ1);
+			add(Jogador2);
+			add(SaldoJ2);
+			break;
+		case 5:
+			add(Jogador5);
+			add(SaldoJ5);
+			add(Jogador4);
+			add(SaldoJ4);
+			add(Jogador3);
+			add(SaldoJ3);
+			add(Jogador1);
+			add(SaldoJ1);
+			add(Jogador2);
+			add(SaldoJ2);
+			break;
+		case 4:
+			add(Jogador4);
+			add(SaldoJ4);
+			add(Jogador3);
+			add(SaldoJ3);
+			add(Jogador1);
+			add(SaldoJ1);
+			add(Jogador2);
+			add(SaldoJ2);
+			break;
+		case 3:
+			add(Jogador3);
+			add(SaldoJ3);
+			add(Jogador1);
+			add(SaldoJ1);
+			add(Jogador2);
+			add(SaldoJ2);
+			break;
+		case 2:
+			add(Jogador1);
+			add(SaldoJ1);
+			add(Jogador2);
+			add(SaldoJ2);
+			break;
+		}
+	}
 	public void paint(Graphics g)
 	{
 		super.paint(g);
-				
-		g.drawString(".", 900, 350);
-		
-		/*Quando mostraDados for verdade */
 		if(mostraDados == true)
 		{
 			for(int n = 0; n < 2; n++)
-				g.drawImage(imagensDados[qtdDados[n] - 1], 800+(150*n), 250, 75, 75, null);
-			
-			if (posCorrELugar == true){
-				g.drawImage(cartaLugar[posCorr],800, 350, 150,200,null);
-				posCorrELugar = false;
-			}
-			if(posCorrEChance == true){
-				g.drawImage(cartaChance[VirarCarta()],800, 350, 150,200,null);
-				posCorrEChance = false;
-			}
-			if(posCorrEAuto == true){
-				if (posCorr == 0) {
-					g.drawString("Ponto de Partida. Receba R$ 200,00", 800, 350);
-				}else if (posCorr == 10) {
-						g.drawString("Prisao!", 800, 350);	
-						}
-					else if (posCorr == 18) {
-							g.drawString("Lucros ou Dividendos. Receba R$ 200,00", 800, 350);
-						}
-						else if (posCorr == 20) {
-							g.drawString("Parada Livre!", 800, 350);
-							}
-							else if (posCorr == 24) {
-								g.drawString("Imposto de Renda. Pague R$ 200,00", 800, 350);								
-								}
-								else 
-									g.drawString("Va a prisao!", 800, 350);
-										
-				
-				posCorrEAuto = false;
-
-			}/* end if */
-				
-		} /* end if */
-		
-	} /* END public void paint(Graphics g) */
-	
-	
-	/* Randomizacao do valor do dado */
-	public int JogarDados()
-	{
-		int res = 0;
-		for(int n = 0; n < 2; n++){
-			qtdDados[n] = ranDado.nextInt(6) + 1;
-			res+=qtdDados[n];
-			System.out.println(qtdDados[n]);
+				g.drawImage(imagensDados[dadosAtuais[n] - 1], 800+(150*n), 200, 100, 100, null);
+			g.drawImage(CartaLugar[tab.jogadores[tab.jogadorAtual].pos-1].img,800, 350, 150,200,null);
+			g.drawImage(tab.jogadores[tab.jogadorAtual].img, 750, 175, null );
 		}
-		return res;
-	} /*END public int JogarDados() */
+
+	}
 	
-	/* Randomizacao do valor da carta */
-	public int VirarCarta()
+	public int jogarDados()
 	{
-		int res = ranChance.nextInt(30); 
-		System.out.println(res);
-		return res;
-	} /*END public int VirarCarta() */
+		int r = 0;
+		for(int n = 0; n < 2; n++){
+			dadosAtuais[n] = random.nextInt(6) + 1;
+			r+=dadosAtuais[n];
+		}
+		tab.jogadorAtual++;
+		if(tab.jogadorAtual > this.numJogadores-1) 
+			tab.jogadorAtual = 0;
+
+		return r;
+	}
 	
-	/* Classe do botao de jogar dado */
-	public class jogarDadosButton_Click implements ActionListener
+	public void mostrarCartaSorte()
 	{
-		/* Implementa acao do jogar dado */
+		
+	}
+	
+	public void mostrarCartaPropiedade()
+	{
+		
+	}
+	
+	public void mostrarMensagem(String s)
+	{
+		
+	}
+
+	public class comprarPropiedadeButton_Click implements ActionListener
+	{
 		public void actionPerformed(ActionEvent e)
 		{
-			
-			int resDado = JogarDados();
-			
-			tab.jogadores[jogCorr].move(resDado);
-			
+			if(tab.jogadores[tab.jogadorAtual].territorioAtual.tipo == Territorio.Tipo.propiedade &&
+					tab.jogadores[tab.jogadorAtual].territorioAtual.preco < tab.jogadores[tab.jogadorAtual].dinheiro &&
+					tab.jogadores[tab.jogadorAtual].territorioAtual.dono == null) {
+				tab.comprarTerreno(tab.jogadores[tab.jogadorAtual], tab.jogadores[tab.jogadorAtual].territorioAtual);
+			}
+		}
+	}
+	
+	
+	
+	public class jogarDadosButton_Click implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			int r = jogarDados();
+			tab.jogadores[tab.jogadorAtual].move(r);
+			tab.jogadores[tab.jogadorAtual].territorioAtual = CartaLugar[tab.jogadores[tab.jogadorAtual].pos-1];
+			switch(tab.jogadores[tab.jogadorAtual].territorioAtual.tipo)
+			{
+			case cartaSorte: 
+				mostrarCartaSorte();
+				break;
+			case propiedade: 
+				mostrarCartaPropiedade();
+				break;
+			case prisao:
+				mostrarMensagem("Voce visitou a prisao");
+				break;
+			case comeco:
+				mostrarMensagem("Voce passou pelo comeco.");
+				break;
+			}
 			repaint();
-			
 			mostraDados=true;
-			
-			posCorr = tab.jogadores[jogCorr].retornaPos();
-			
-			
-			if (posCorr==1||posCorr==3||posCorr==4||posCorr==5||posCorr==6||posCorr==7||posCorr==8||posCorr==9
-					||posCorr==11||posCorr==13||posCorr==14||posCorr==15||posCorr==17||posCorr==19||posCorr==21
-					||posCorr==23||posCorr==25||posCorr==26||posCorr==28||posCorr==29||posCorr==31||posCorr==32
-					||posCorr==33||posCorr==34||posCorr==35||posCorr==36||posCorr==38||posCorr==39){
-				posCorrELugar = true;
-			}else if (posCorr==2||posCorr==12||posCorr==16||posCorr==22||posCorr==27||posCorr==37){
-				posCorrEChance = true;
-			}else if (posCorr==0||posCorr==10||posCorr==18||posCorr==20||posCorr==24||posCorr==30){
-				posCorrEAuto = true;
-				
-			} /* enf if*/
-
-		} /* END public void actionPerformed(ActionEvent e) */
-	} /* END jogarDadosButton_Click */
+		}
+	}
 	
 }
