@@ -27,7 +27,6 @@ public class Mesa extends JFrame
 	Tabuleiro tab;
 	DadosPanel dp;
 	
-	
 	public int cartasTiradas[];
 	public int cartasTiradasContador;
 
@@ -39,23 +38,8 @@ public class Mesa extends JFrame
 	JLabel JogadorNum;
 	JLabel JogadorNumSaldo;
 	
-	JLabel Jogador1;
-	JLabel SaldoJ1;
-
-	JLabel Jogador2;
-	JLabel SaldoJ2;
-	
-	JLabel Jogador3;
-	JLabel SaldoJ3;
-	
-	JLabel Jogador4;
-	JLabel SaldoJ4;
-	
-	JLabel Jogador5;
-	JLabel SaldoJ5;
-	
-	JLabel Jogador6;
-	JLabel SaldoJ6;
+	JLabel jogadoresLabel[];
+	JLabel saldoLabel[];
 
 	public Mesa(int numJogadores, String s)
 	{
@@ -68,6 +52,9 @@ public class Mesa extends JFrame
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		tab = new Tabuleiro();
 		dp = new DadosPanel(tab.jogadores);
+		
+		jogadoresLabel = new JLabel[6];
+		saldoLabel = new JLabel[6];
 		
 		jogarDado = new JButton("Jogar Dados");
 		jogarDado.setBounds(750,50,120,30);
@@ -91,42 +78,16 @@ public class Mesa extends JFrame
 		JogadorNumSaldo.setBounds(750,100,100,50);
 		add(JogadorNumSaldo);
 		
-		Jogador1 = new JLabel("Jogador 1");
-		Jogador1.setBounds(100,700,100,50);
-	
-		SaldoJ1 = new JLabel(String.format("R$%d", tab.jogadores[0].dinheiro));
-		SaldoJ1.setBounds(100,725,100,50);
 		
-		Jogador2 = new JLabel("Jogador 2");
-		Jogador2.setBounds(200,700,100,50);
+		for(int i = 0; i < numJogadores; i++) {
+			jogadoresLabel[i] = new JLabel("Jogador " +(i+1));
+			jogadoresLabel[i].setBounds(100+(i*100),700,100,50);
+			add(jogadoresLabel[i]);
+			saldoLabel[i] = new JLabel(String.format("R$%d", tab.jogadores[i].dinheiro));
+			saldoLabel[i].setBounds(100+(i*100),725,100,50);
+			add(saldoLabel[i]);
+		}
 	
-		SaldoJ2 = new JLabel(String.format("R$%d", tab.jogadores[1].dinheiro));
-		SaldoJ2.setBounds(200,725,100,50);
-		
-		Jogador3 = new JLabel("Jogador 3");
-		Jogador3.setBounds(300,700,100,50);
-	
-		SaldoJ3 = new JLabel(String.format("R$%d", tab.jogadores[2].dinheiro));
-		SaldoJ3.setBounds(300,725,100,50);
-		
-		Jogador4 = new JLabel("Jogador 4");
-		Jogador4.setBounds(400,700,100,50);
-	
-		SaldoJ4 = new JLabel(String.format("R$%d", tab.jogadores[3].dinheiro));
-		SaldoJ4.setBounds(400,725,100,50);
-		
-		Jogador5 = new JLabel("Jogador 5");
-		Jogador5.setBounds(500,700,100,50);
-	
-		SaldoJ5 = new JLabel(String.format("R$%d", tab.jogadores[4].dinheiro));
-		SaldoJ5.setBounds(500,725,100,50);
-		
-		Jogador6 = new JLabel("Jogador 6");
-		Jogador6.setBounds(600,700,100,50);
-	
-		SaldoJ6= new JLabel(String.format("R$%d", tab.jogadores[5].dinheiro));
-		SaldoJ6.setBounds(600,725,100,50);
-		
 		random = new Random();
 		imagensDados = new Image[6];
 		dadosAtuais = new int[2];
@@ -213,60 +174,8 @@ public class Mesa extends JFrame
 		dp.setBounds(20, 700, 150, 100);
 		add(tab);
 		//add(dp);
-		switch(this.numJogadores)
-		{
-		case 6:
-			add(Jogador6);
-			add(SaldoJ6);
-			add(Jogador5);
-			add(SaldoJ5);
-			add(Jogador4);
-			add(SaldoJ4);
-			add(Jogador3);
-			add(SaldoJ3);
-			add(Jogador1);
-			add(SaldoJ1);
-			add(Jogador2);
-			add(SaldoJ2);
-			break;
-		case 5:
-			add(Jogador5);
-			add(SaldoJ5);
-			add(Jogador4);
-			add(SaldoJ4);
-			add(Jogador3);
-			add(SaldoJ3);
-			add(Jogador1);
-			add(SaldoJ1);
-			add(Jogador2);
-			add(SaldoJ2);
-			break;
-		case 4:
-			add(Jogador4);
-			add(SaldoJ4);
-			add(Jogador3);
-			add(SaldoJ3);
-			add(Jogador1);
-			add(SaldoJ1);
-			add(Jogador2);
-			add(SaldoJ2);
-			break;
-		case 3:
-			add(Jogador3);
-			add(SaldoJ3);
-			add(Jogador1);
-			add(SaldoJ1);
-			add(Jogador2);
-			add(SaldoJ2);
-			break;
-		case 2:
-			add(Jogador1);
-			add(SaldoJ1);
-			add(Jogador2);
-			add(SaldoJ2);
-			break;
-		}
 	}
+	
 	public void paint(Graphics g)
 	{
 		super.paint(g);
@@ -340,6 +249,14 @@ public class Mesa extends JFrame
 		}
 		return false;
 	}
+	
+	public void MudaSaldo()
+	{
+		for(int i = 0; i < numJogadores; i++)
+		{
+			this.saldoLabel[i].setText(String.format("R$%d", tab.jogadores[i].dinheiro));
+		}
+	}
 
 	public class comprarPropiedadeButton_Click implements ActionListener
 	{
@@ -350,6 +267,7 @@ public class Mesa extends JFrame
 					tab.jogadores[tab.jogadorAtual].territorioAtual.dono == null) {
 				tab.comprarTerreno(tab.jogadores[tab.jogadorAtual], tab.jogadores[tab.jogadorAtual].territorioAtual);
 			}
+			MudaSaldo();
 		}
 	}
 	
@@ -359,9 +277,11 @@ public class Mesa extends JFrame
 	{
 		public void actionPerformed(ActionEvent e)
 		{
+			
 			int r = jogarDados();
 			tab.jogadores[tab.jogadorAtual].move(r);
-			tab.jogadores[tab.jogadorAtual].territorioAtual = cartaLugar[tab.jogadores[tab.jogadorAtual].pos-1];
+			tab.jogadores[tab.jogadorAtual].territorioAtual = cartaLugar[tab.jogadores[tab.jogadorAtual].pos];
+			cartaAtual = null;
 
 			switch(tab.jogadores[tab.jogadorAtual].territorioAtual.tipo)
 			{

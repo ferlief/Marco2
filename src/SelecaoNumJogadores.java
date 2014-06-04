@@ -29,37 +29,37 @@ public class SelecaoNumJogadores extends JFrame
 
 		DoisJogadores = new JButton("Dois Jogadores");
 		DoisJogadores.setBounds(500,100,200,30);
-		DoisJogadores.addActionListener(new jogarDadosButton_Click(2));
+		DoisJogadores.addActionListener(new selecionaJogadorButton_Click(2));
 		add(DoisJogadores);
 
 		TresJogadores = new JButton("Tres Jogadores");
 		TresJogadores.setBounds(500,125,200,30);
-		TresJogadores.addActionListener(new jogarDadosButton_Click(3));
+		TresJogadores.addActionListener(new selecionaJogadorButton_Click(3));
 		add(TresJogadores);
 
 		QuatroJogadores = new JButton("Quatro Jogadores");
 		QuatroJogadores.setBounds(500,150,200,30);
-		QuatroJogadores.addActionListener(new jogarDadosButton_Click(4));
+		QuatroJogadores.addActionListener(new selecionaJogadorButton_Click(4));
 		add(QuatroJogadores);
 
 		CincoJogadores = new JButton("Cinco Jogadores");
 		CincoJogadores.setBounds(500,175,200,30);
-		CincoJogadores.addActionListener(new jogarDadosButton_Click(5));
+		CincoJogadores.addActionListener(new selecionaJogadorButton_Click(5));
 		add(CincoJogadores);
 
 		SeisJogadores = new JButton("Seis Jogadores");
 		SeisJogadores.setBounds(500,200,200,30);
-		SeisJogadores.addActionListener(new jogarDadosButton_Click(6));
+		SeisJogadores.addActionListener(new selecionaJogadorButton_Click(6));
 		add(SeisJogadores);
 		
 		
 		        
 		
 	}
-		public class jogarDadosButton_Click implements ActionListener
+	public class selecionaJogadorButton_Click implements ActionListener
 	{
 		int numJogadores;
-		public jogarDadosButton_Click(int num){
+		public selecionaJogadorButton_Click(int num){
 			this.numJogadores=num;
 		}
 		public void actionPerformed(ActionEvent e)

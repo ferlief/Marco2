@@ -18,12 +18,12 @@ public class Tabuleiro extends JPanel{
 		int sa = (screenSize.height);
 		jogadores = new Jogador[6];
 		territorios = new Territorio[40];
-		jogadores[0] = new Jogador(60, 20);
-		jogadores[1] = new Jogador(45, 5);
-		jogadores[2] = new Jogador(36, 12);
-		jogadores[3] = new Jogador(56, 32);
-		jogadores[4] = new Jogador(21, 15);
-		jogadores[5] = new Jogador(33, 25);
+		jogadores[0] = new Jogador(55, 10);
+		jogadores[1] = new Jogador(45, 15);
+		jogadores[2] = new Jogador(35, 20);
+		jogadores[3] = new Jogador(55, 25);
+		jogadores[4] = new Jogador(45, 30);
+		jogadores[5] = new Jogador(35, 35);
 		jogadorAtual = 0;
 		
 		try
