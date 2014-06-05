@@ -34,7 +34,7 @@ public class Mesa extends JFrame
 	int VJogador;
 	int JogCorrente = 0;
 
-	JLabel Turno;
+	JLabel Mensagem;
 	JLabel JogadorNum;
 	JLabel JogadorNumSaldo;
 	
@@ -66,9 +66,9 @@ public class Mesa extends JFrame
 		comprarPropiedade.addActionListener(new comprarPropiedadeButton_Click());
 		add(comprarPropiedade);
 
-		Turno = new JLabel("Turno");
-		Turno.setBounds(750,50,100,50);
-		add(Turno);
+		Mensagem = new JLabel("");
+		Mensagem.setBounds(800,650,500,100);
+		add(Mensagem);
 		
 		JogadorNum = new JLabel("Jogador Atual");
 		JogadorNum.setBounds(750,75,100,50);
@@ -215,7 +215,7 @@ public class Mesa extends JFrame
 	
 	public void mostrarMensagem(String s)
 	{
-		
+		this.Mensagem.setText(s);
 	}
 	
 	/* Randomizacao do valor da carta */
@@ -288,10 +288,12 @@ public class Mesa extends JFrame
 			case cartaSorte: 
 				cartaAtual = cartaChance[VirarCarta()].img;
 				mostrarCartaSorte();
+				mostrarMensagem("");
 				break;
 			case propriedade:
 				cartaAtual = tab.jogadores[tab.jogadorAtual].territorioAtual.img;
 				mostrarCartaPropiedade();
+				mostrarMensagem("");
 				break;
 			case vaParaPrisao:
 				mostrarMensagem("Voce visitou a prisao");
@@ -306,6 +308,13 @@ public class Mesa extends JFrame
 				mostrarMensagem("Neutro.");
 				break;
 			}
+			
+			if( tab.jogadores[tab.jogadorAtual].territorioAtual.dono != null &&
+					tab.jogadores[tab.jogadorAtual].territorioAtual.dono != tab.jogadores[tab.jogadorAtual] )
+			{
+				
+			}
+			
 			repaint();
 			mostraDados=true;
 		}
