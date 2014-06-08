@@ -17,15 +17,22 @@ public class Mesa extends JFrame
 	public int dadosAtuais[];
 	boolean mostraDados = false;
 	public int numJogadores;
-	
+
+	Tabuleiro tab;
+	private JPanel topPanel;
+	private JPanel bottomPanel;
+	private JSplitPane split;
+	private JLayeredPane lp;	
 	Territorio cartaLugar[];
 	Territorio cartaChance[];
 	
 	Image cartaAtual;
 
 	Image imagensDados[];
-	Tabuleiro tab;
 	DadosPanel dp;
+	
+	private JTextArea outputArea;
+	private JScrollPane outputPane;
 	
 	public int cartasTiradas[];
 	public int cartasTiradasContador;
@@ -45,49 +52,106 @@ public class Mesa extends JFrame
 	{
 		super(s);
 		this.numJogadores = numJogadores;
-		setLayout(null);
+		instantiate();
+		initTokens(); 
+		loadCards();
+		
+		//Generate and add stuff to the panels
+		bottomPanel.add(jogarDado);
+		bottomPanel.add(comprarPropiedade);
+		bottomPanel.add(Mensagem);
+		bottomPanel.add(JogadorNum);
+		bottomPanel.add(JogadorNumSaldo);
+		for(int i = 0; i < numJogadores; i++) {
+			topPanel.add(jogadoresLabel[i]);
+			topPanel.add(saldoLabel[i]);
+		}
+		
+		setTitle("Monopoly");
+		setSize(1200, 850);
+		setLayout(new BorderLayout());
+		add(topPanel, BorderLayout.NORTH);
+		add(split, BorderLayout.CENTER);
+		add(bottomPanel, BorderLayout.SOUTH);	
+		//Sets a minimum size for the the board, which 
+		//is the size of the image of the board.
+		Dimension d = new Dimension(600,600);
+		tab.setMinimumSize(d);
+		//Sets a minimum size for the output area,
+		//based on the board.
+		Dimension d1 = new Dimension(214, 800);
+		outputPane.setMinimumSize(d1);
+		
 		setBackground(Color.white);
 		Container c = getContentPane();
 		c.setBackground(Color.white);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		tab = new Tabuleiro();
-		dp = new DadosPanel(tab.jogadores);
+		//this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		
-		jogadoresLabel = new JLabel[6];
-		saldoLabel = new JLabel[6];
+/*		add(jogarDado);
 		
+		add(comprarPropiedade);
+
+		add(Mensagem);
+		
+		add(JogadorNum);
+		
+		add(JogadorNumSaldo);*/
+		
+
+	
+		JMenuBar MenuBar = new JMenuBar();
+        setJMenuBar(MenuBar);
+
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		tab.setBounds(100, 100, 600, 600);
+//		dp.setBounds(20, 700, 150, 100);
+//		add(tab);
+//		add(dp);
+	}
+	
+	private void initTokens() {
 		jogarDado = new JButton("Jogar Dados");
 		jogarDado.setBounds(750,50,120,30);
 		jogarDado.addActionListener(new jogarDadosButton_Click());
-		add(jogarDado);
 		
 		comprarPropiedade = new JButton("Comprar Propiedade");
 		comprarPropiedade.setBounds(950,50,220,30);
 		comprarPropiedade.addActionListener(new comprarPropiedadeButton_Click());
-		add(comprarPropiedade);
 
 		Mensagem = new JLabel("");
 		Mensagem.setBounds(800,650,500,100);
-		add(Mensagem);
 		
 		JogadorNum = new JLabel("Jogador Atual");
 		JogadorNum.setBounds(750,75,100,50);
-		add(JogadorNum);
 		
 		JogadorNumSaldo = new JLabel(String.format("R$%d", tab.jogadores[tab.jogadorAtual].dinheiro));
 		JogadorNumSaldo.setBounds(750,100,100,50);
-		add(JogadorNumSaldo);
-		
 		
 		for(int i = 0; i < numJogadores; i++) {
 			jogadoresLabel[i] = new JLabel("Jogador " +(i+1));
 			jogadoresLabel[i].setBounds(100+(i*100),700,100,50);
-			add(jogadoresLabel[i]);
 			saldoLabel[i] = new JLabel(String.format("R$%d", tab.jogadores[i].dinheiro));
 			saldoLabel[i].setBounds(100+(i*100),725,100,50);
-			add(saldoLabel[i]);
 		}
+	}
 	
+	private void instantiate() {
+		tab = new Tabuleiro();
+		dp = new DadosPanel(tab.jogadores);
+		jogadoresLabel = new JLabel[6];
+		saldoLabel = new JLabel[6];
+		topPanel = new JPanel(new FlowLayout());
+		bottomPanel = new JPanel(new FlowLayout());
+		lp = getLayeredPane();
+		outputArea = new JTextArea("Welcome to Monopoly\n");
+		outputArea.setEditable(false);
+		outputArea.setLineWrap(true);
+		outputPane = new JScrollPane(outputArea);
+		split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tab, outputPane);
+	}
+	
+	private void loadCards() {
 		random = new Random();
 		imagensDados = new Image[6];
 		dadosAtuais = new int[2];
@@ -155,9 +219,6 @@ public class Mesa extends JFrame
 			}
 		}
 		
-		JMenuBar MenuBar = new JMenuBar();
-        setJMenuBar(MenuBar);
-        
 		for(int n = 0; n < 6; n++)
 		{
 			String caminho = "img/Dice"+(n+1)+".png";
@@ -169,11 +230,6 @@ public class Mesa extends JFrame
 			{
 			}
 		}
-
-		tab.setBounds(100, 100, 600, 600);
-		dp.setBounds(20, 700, 150, 100);
-		add(tab);
-		//add(dp);
 	}
 	
 	public void paint(Graphics g)
@@ -213,10 +269,15 @@ public class Mesa extends JFrame
 		
 	}
 	
-	public void mostrarMensagem(String s)
+	public void mostrarMensagem(String text) {
+		outputArea.append(text + "\n");
+		outputArea.setCaretPosition(outputArea.getDocument().getLength());
+	}
+
+/*	public void mostrarMensagem(String s)
 	{
 		this.Mensagem.setText(s);
-	}
+	}*/
 	
 	/* Randomizacao do valor da carta */
 	public int VirarCarta()
@@ -249,7 +310,7 @@ public class Mesa extends JFrame
 		}
 		return false;
 	}
-	
+
 	public void MudaSaldo()
 	{
 		for(int i = 0; i < numJogadores; i++)
@@ -288,12 +349,10 @@ public class Mesa extends JFrame
 			case cartaSorte: 
 				cartaAtual = cartaChance[VirarCarta()].img;
 				mostrarCartaSorte();
-				mostrarMensagem("");
 				break;
 			case propriedade:
 				cartaAtual = tab.jogadores[tab.jogadorAtual].territorioAtual.img;
 				mostrarCartaPropiedade();
-				mostrarMensagem("");
 				break;
 			case vaParaPrisao:
 				mostrarMensagem("Voce visitou a prisao");
