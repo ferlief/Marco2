@@ -22,7 +22,7 @@ public class Mesa extends JFrame
 	private JPanel topPanel;
 	private JPanel bottomPanel;
 	private JSplitPane split;
-	private JLayeredPane lp;	
+	//private JLayeredPane lp;	
 	Territorio cartaLugar[];
 	Territorio cartaChance[];
 	
@@ -143,7 +143,7 @@ public class Mesa extends JFrame
 		saldoLabel = new JLabel[6];
 		topPanel = new JPanel(new FlowLayout());
 		bottomPanel = new JPanel(new FlowLayout());
-		lp = getLayeredPane();
+	//	lp = getLayeredPane();
 		outputArea = new JTextArea("Welcome to Monopoly\n");
 		outputArea.setEditable(false);
 		outputArea.setLineWrap(true);
