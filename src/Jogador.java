@@ -23,6 +23,7 @@ public class Jogador {
 		yi = 0;
 		this.move(0);
 		dinheiro = 5000;
+		nome = "Jogador " + cont;
 		cont++;
 		propiedades = new Territorio[40];
 	}

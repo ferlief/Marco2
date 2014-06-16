@@ -191,6 +191,10 @@ public class Mesa extends JFrame
 			}
 			if (m==2||m==12||m==16||m==22||m==27||m==37){
 				cartaLugar[m].tipo = Territorio.Tipo.cartaSorte;
+				if ( m % 2 == 0 )
+					cartaLugar[m].preco = 50;
+				else
+					cartaLugar[m].preco = -50;
 				continue;
 			}
 			
@@ -249,7 +253,22 @@ public class Mesa extends JFrame
 	
 	public void mostrarCartaSorte()
 	{
-		
+		Jogador jogadorAtual = tab.jogadores[tab.jogadorAtual];
+		Territorio terAtual = jogadorAtual.territorioAtual;
+		if(terAtual.preco > 0 ) {
+			mostrarMensagem(String.format("Sorte! Ganhou R$%d", terAtual.preco));
+		} else {
+			mostrarMensagem(String.format("Revez. Perdeu R$%d", terAtual.preco));
+		}
+		jogadorAtual.dinheiro += terAtual.preco;
+		if(jogadorAtual.dinheiro < 0 ) {
+			falencia();
+		}
+		MudaSaldo();
+	}
+	
+	public void falencia(){
+		mostrarMensagem("Foi a falencia!");
 	}
 	
 	public void mostrarCartaPropiedade()
@@ -262,7 +281,7 @@ public class Mesa extends JFrame
 			boolean resultado = jogadorAtual.pagarAluguel(terAtual.dono, terAtual.aluguel);
 			if (!resultado)
 			{
-				mostrarMensagem("Foi a falencia!");
+				falencia();
 			}
 			MudaSaldo();
 		}

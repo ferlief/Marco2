@@ -40,7 +40,7 @@ public class Tabuleiro extends JPanel{
 		jogadores[3] = new Jogador(55, 25);
 		jogadores[4] = new Jogador(45, 30);
 		jogadores[5] = new Jogador(35, 35);*/
-		jogadorAtual = 0;
+		jogadorAtual = numJogadores-1;
 		
 		try
 		{
