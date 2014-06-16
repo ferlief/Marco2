@@ -87,18 +87,6 @@ public class Mesa extends JFrame
 		c.setBackground(Color.white);
 		//this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		
-/*		add(jogarDado);
-		
-		add(comprarPropiedade);
-
-		add(Mensagem);
-		
-		add(JogadorNum);
-		
-		add(JogadorNumSaldo);*/
-		
-
-	
 		JMenuBar MenuBar = new JMenuBar();
         setJMenuBar(MenuBar);
 
@@ -137,7 +125,7 @@ public class Mesa extends JFrame
 	}
 	
 	private void instantiate() {
-		tab = new Tabuleiro();
+		tab = new Tabuleiro(numJogadores);
 		dp = new DadosPanel(tab.jogadores);
 		jogadoresLabel = new JLabel[6];
 		saldoLabel = new JLabel[6];
