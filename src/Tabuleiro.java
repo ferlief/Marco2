@@ -86,7 +86,7 @@ public class Tabuleiro extends JPanel{
 		}
 		for(int i = 0; i < 40; i++) {
 			if(cartaLugar[i].point!= null) {
-				g.drawImage(cartaLugar[i].point, cartaLugar[i].x, cartaLugar[i].y, null);
+				g.drawImage(cartaLugar[i].point, cartaLugar[i].x + 10, cartaLugar[i].y + 20, null);
 			}
 		}
 	} 

@@ -191,10 +191,6 @@ public class Mesa extends JFrame
 			}
 			if (m==2||m==12||m==16||m==22||m==27||m==37){
 				cartaLugar[m].tipo = Territorio.Tipo.cartaSorte;
-				if ( m % 2 == 0 )
-					cartaLugar[m].preco = 50;
-				else
-					cartaLugar[m].preco = -50;
 				continue;
 			}
 			
@@ -251,16 +247,16 @@ public class Mesa extends JFrame
 		return r;
 	}
 	
-	public void mostrarCartaSorte()
+	public void mostrarCartaSorte(int cartaNum)
 	{
 		Jogador jogadorAtual = tab.jogadores[tab.jogadorAtual];
-		Territorio terAtual = jogadorAtual.territorioAtual;
-		if(terAtual.preco > 0 ) {
-			mostrarMensagem(String.format("Sorte! Ganhou R$%d", terAtual.preco));
+		int sorteValor = calculaValor( cartaNum+1 );
+		if(sorteValor > 0 ) {
+			mostrarMensagem(String.format("Sorte! Ganhou R$%d", sorteValor));
 		} else {
-			mostrarMensagem(String.format("Revez. Perdeu R$%d", terAtual.preco));
+			mostrarMensagem(String.format("Revez. Perdeu R$%d", sorteValor));
 		}
-		jogadorAtual.dinheiro += terAtual.preco;
+		jogadorAtual.dinheiro += sorteValor;
 		if(jogadorAtual.dinheiro < 0 ) {
 			falencia();
 		}
@@ -457,21 +453,24 @@ public class Mesa extends JFrame
 		public void actionPerformed(ActionEvent e)
 		{
 			Jogador jogadorAtual = tab.jogadores[tab.jogadorAtual];
-			Territorio terAtual = jogadorAtual.territorioAtual;
-			if(terAtual.tipo == Territorio.Tipo.propriedade) {
-				if( terAtual.preco <= jogadorAtual.dinheiro &&
-						terAtual.dono == null) {
-					tab.comprarTerreno(jogadorAtual, terAtual);
-					MudaSaldo();
-				}
-				else
-				{
-					if(terAtual.dono == jogadorAtual) {
-						mostrarMensagem(String.format("Propriedade j� � sua"));
-					} else if (terAtual.dono != null) {
-						mostrarMensagem(String.format("Propriedade j� � do jogador %s", terAtual.dono.nome));
-					} else if (terAtual.preco > jogadorAtual.dinheiro) {
-						mostrarMensagem(String.format("Propriedade custa R$%d, voc� tem apenas R$%d", terAtual.preco, jogadorAtual.dinheiro));
+			if(jogadorAtual.territorioAtual!= null) {
+				Territorio terAtual = jogadorAtual.territorioAtual;
+				if(terAtual.tipo == Territorio.Tipo.propriedade) {
+					if( terAtual.preco <= jogadorAtual.dinheiro &&
+							terAtual.dono == null) {
+						tab.comprarTerreno(jogadorAtual, terAtual);
+						mostrarMensagem(String.format("Comprou propriedade por R$%d!", terAtual.preco));
+						MudaSaldo();
+					}
+					else
+					{
+						if(terAtual.dono == jogadorAtual) {
+							mostrarMensagem(String.format("Propriedade ja e sua"));
+						} else if (terAtual.dono != null) {
+							mostrarMensagem(String.format("Propriedade ja e do jogador %s", terAtual.dono.nome));
+						} else if (terAtual.preco > jogadorAtual.dinheiro) {
+							mostrarMensagem(String.format("Propriedade custa R$%d, voce tem apenas R$%d", terAtual.preco, jogadorAtual.dinheiro));
+						}
 					}
 				}
 			}
@@ -493,8 +492,9 @@ public class Mesa extends JFrame
 			switch(tab.jogadores[tab.jogadorAtual].territorioAtual.tipo)
 			{
 			case cartaSorte: 
-				cartaAtual = cartaChance[VirarCarta()].img;
-				mostrarCartaSorte();
+				int cartaNum = VirarCarta();
+				cartaAtual = cartaChance[cartaNum].img;
+				mostrarCartaSorte(cartaNum);
 				break;
 			case propriedade:
 				cartaAtual = tab.jogadores[tab.jogadorAtual].territorioAtual.img;
