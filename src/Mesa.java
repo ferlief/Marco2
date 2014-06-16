@@ -336,6 +336,70 @@ public class Mesa extends JFrame
 			this.saldoLabel[i].setText(String.format("R$%d", tab.jogadores[i].dinheiro));
 		}
 	}
+	
+	public int calculaValor (int pos){
+				
+		if( pos < 16 ){
+			if ( pos == 1){
+				return 25;			
+			}
+			else if ( pos == 2 ){
+				return 150;			
+			}
+			else if ( pos == 3 ){
+				return 80;			
+			}
+			else if ( pos == 4 ){
+				return 200;			
+			}
+			else if ( pos == 5 || pos == 6 ){
+				return 50;
+			}
+			else if ( pos == 7 || pos == 8 || pos == 13 ||  pos == 14 ){
+				return 100;
+			}
+			else if ( pos == 9 || pos == 10 || pos == 11 ){
+				return 0;
+			}
+			else if ( pos == 12 ){
+				return 45;
+			}
+			else if ( pos == 15 ){
+				return 20;
+			}
+		}
+		else {
+			if ( pos == 16){
+				return -15;			
+			}
+			else if ( pos == 17 || pos == 26 ){
+				return -25;			
+			}
+			else if ( pos == 18 || pos == 28 ){
+				return -45;			
+			}
+			else if ( pos == 19 || pos == 27 ){
+				return -30;			
+			}
+			else if ( pos == 20 || pos == 21 ){
+				return -100;
+			}
+			else if ( pos == 22 ){
+				return -40;
+			}
+			else if ( pos == 23 ){
+				return 0;
+			}
+			else if ( pos == 24 ){
+				return -30;
+			}
+			else if ( pos == 25 || pos == 29 || pos == 30 ){
+				return -50;
+			}
+		}		
+		
+		return -1;
+	}
 
 	public class comprarPropiedadeButton_Click implements ActionListener
 	{
@@ -352,11 +416,11 @@ public class Mesa extends JFrame
 				else
 				{
 					if(terAtual.dono == jogadorAtual) {
-						mostrarMensagem(String.format("Propriedade já é sua"));
+						mostrarMensagem(String.format("Propriedade jï¿½ ï¿½ sua"));
 					} else if (terAtual.dono != null) {
-						mostrarMensagem(String.format("Propriedade já é do jogador %s", terAtual.dono.nome));
+						mostrarMensagem(String.format("Propriedade jï¿½ ï¿½ do jogador %s", terAtual.dono.nome));
 					} else if (terAtual.preco > jogadorAtual.dinheiro) {
-						mostrarMensagem(String.format("Propriedade custa R$%d, você tem apenas R$%d", terAtual.preco, jogadorAtual.dinheiro));
+						mostrarMensagem(String.format("Propriedade custa R$%d, vocï¿½ tem apenas R$%d", terAtual.preco, jogadorAtual.dinheiro));
 					}
 				}
 			}
