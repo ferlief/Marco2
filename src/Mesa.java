@@ -21,15 +21,13 @@ public class Mesa extends JFrame
 	Tabuleiro tab;
 	private JPanel topPanel;
 	private JPanel bottomPanel;
-	private JSplitPane split;
-	//private JLayeredPane lp;	
+	private JSplitPane split;	
 	Territorio cartaLugar[];
 	Territorio cartaChance[];
 	
 	Image cartaAtual;
 
 	Image imagensDados[];
-	DadosPanel dp;
 	
 	private JTextArea outputArea;
 	private JScrollPane outputPane;
@@ -92,10 +90,6 @@ public class Mesa extends JFrame
 
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		tab.setBounds(100, 100, 600, 600);
-//		dp.setBounds(20, 700, 150, 100);
-//		add(tab);
-//		add(dp);
 	}
 	
 	private void initTokens() {
@@ -126,12 +120,10 @@ public class Mesa extends JFrame
 	
 	private void instantiate() {
 		tab = new Tabuleiro(numJogadores, cartaLugar);
-		dp = new DadosPanel(tab.jogadores);
 		jogadoresLabel = new JLabel[6];
 		saldoLabel = new JLabel[6];
 		topPanel = new JPanel(new FlowLayout());
 		bottomPanel = new JPanel(new FlowLayout());
-	//	lp = getLayeredPane();
 		outputArea = new JTextArea("Welcome to Monopoly\n");
 		outputArea.setEditable(false);
 		outputArea.setLineWrap(true);
