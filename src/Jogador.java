@@ -54,6 +54,17 @@ public class Jogador {
 	}
 	
 	
+	// Retorna true caso o jogador consiga pagar o aluguel, false caso ele não tenha fundos
+	public boolean pagarAluguel(Jogador dono, int aluguel)
+	{
+		this.dinheiro -= aluguel;
+		if(this.dinheiro < 0){
+			dono.dinheiro = aluguel + this.dinheiro;
+			return false;
+		}
+		dono.dinheiro += aluguel;
+		return true;
+	}
 	
 	public void move(int steps) {
 		pos+=steps;

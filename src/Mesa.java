@@ -254,11 +254,22 @@ public class Mesa extends JFrame
 	
 	public void mostrarCartaPropiedade()
 	{
-		
+		Jogador jogadorAtual = tab.jogadores[tab.jogadorAtual];
+		Territorio terAtual = jogadorAtual.territorioAtual;
+		if( jogadorAtual != terAtual.dono && terAtual.dono != null )
+		{
+			mostrarMensagem(String.format("Territorio do jogador %s, aluguel de R$%d", terAtual.dono.nome, terAtual.aluguel));
+			boolean resultado = jogadorAtual.pagarAluguel(terAtual.dono, terAtual.aluguel);
+			if (!resultado)
+			{
+				mostrarMensagem("Foi a falencia!");
+			}
+			MudaSaldo();
+		}
 	}
 	
 	public void mostrarMensagem(String text) {
-		outputArea.append(text + "\n");
+		outputArea.append(String.format("[%s] - %s \n", tab.jogadores[tab.jogadorAtual].nome, text));
 		outputArea.setCaretPosition(outputArea.getDocument().getLength());
 	}
 
@@ -311,12 +322,25 @@ public class Mesa extends JFrame
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			if(tab.jogadores[tab.jogadorAtual].territorioAtual.tipo == Territorio.Tipo.propriedade &&
-					tab.jogadores[tab.jogadorAtual].territorioAtual.preco < tab.jogadores[tab.jogadorAtual].dinheiro &&
-					tab.jogadores[tab.jogadorAtual].territorioAtual.dono == null) {
-				tab.comprarTerreno(tab.jogadores[tab.jogadorAtual], tab.jogadores[tab.jogadorAtual].territorioAtual);
+			Jogador jogadorAtual = tab.jogadores[tab.jogadorAtual];
+			Territorio terAtual = jogadorAtual.territorioAtual;
+			if(terAtual.tipo == Territorio.Tipo.propriedade) {
+				if( terAtual.preco <= jogadorAtual.dinheiro &&
+						terAtual.dono == null) {
+					tab.comprarTerreno(jogadorAtual, terAtual);
+					MudaSaldo();
+				}
+				else
+				{
+					if(terAtual.dono == jogadorAtual) {
+						mostrarMensagem(String.format("Propriedade já é sua"));
+					} else if (terAtual.dono != null) {
+						mostrarMensagem(String.format("Propriedade já é do jogador %s", terAtual.dono.nome));
+					} else if (terAtual.preco > jogadorAtual.dinheiro) {
+						mostrarMensagem(String.format("Propriedade custa R$%d, você tem apenas R$%d", terAtual.preco, jogadorAtual.dinheiro));
+					}
+				}
 			}
-			MudaSaldo();
 		}
 	}
 	
