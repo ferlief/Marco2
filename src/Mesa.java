@@ -52,9 +52,9 @@ public class Mesa extends JFrame
 	{
 		super(s);
 		this.numJogadores = numJogadores;
+		loadCards();
 		instantiate();
 		initTokens(); 
-		loadCards();
 		
 		//Generate and add stuff to the panels
 		bottomPanel.add(jogarDado);
@@ -125,7 +125,7 @@ public class Mesa extends JFrame
 	}
 	
 	private void instantiate() {
-		tab = new Tabuleiro(numJogadores);
+		tab = new Tabuleiro(numJogadores, cartaLugar);
 		dp = new DadosPanel(tab.jogadores);
 		jogadoresLabel = new JLabel[6];
 		saldoLabel = new JLabel[6];

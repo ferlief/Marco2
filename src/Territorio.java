@@ -7,6 +7,8 @@ public class Territorio {
 	public Tipo tipo;
 	public Jogador dono;
 	public Image img;
+	public Image point;
+	public int x, y;
 	
 	public enum Tipo { propriedade, cartaSorte, vaParaPrisao, bonus, imposto, neutro }
 	
@@ -17,5 +19,5 @@ public class Territorio {
 		this.preco = preco;
 		this.aluguel = aluguel;
 	}
-
+	
 }

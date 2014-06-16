@@ -5,6 +5,7 @@ public class Jogador {
 	public static int cont = 0;
 	
 	public Image img;
+	public Image point;
 	public String nome;
 	public int _x, _y;
 	public int dinheiro;
