@@ -400,6 +400,57 @@ public class Mesa extends JFrame
 		
 		return -1;
 	}
+	
+	public int calculaCompraTerr (int pos){
+				
+		if ( pos == 1 || pos == 23){
+			return -100;			
+		}
+		else if ( pos == 3 || pos == 4 ){
+			return -60;			
+		}
+		else if ( pos == 5 || pos == 7 || pos == 11 || pos == 35){
+			return -200;			
+		}
+		else if ( pos == 6 ){
+			return -240;			
+		}
+		else if ( pos == 8 || pos == 9 ){
+			return -220;
+		}
+		else if ( pos == 13 || pos == 14 ){
+			return -180;
+		}
+		else if ( pos == 15 ||  pos == 25 ){
+			return -150;
+		}
+		else if ( pos == 17 ){
+			return -350;
+		}
+		else if ( pos == 19 ){
+			return -400;
+		}
+		else if ( pos == 21 ){
+			return -120;
+		}
+		else if ( pos == 26 ){
+			return -160;
+		}
+		else if ( pos == 28 || pos == 29 ){
+			return -140;
+		}
+		else if ( pos == 31 || pos == 38 || pos == 39){
+			return -260;
+		}
+		else if ( pos == 33 ){
+			return -320;
+		}
+		else if ( pos == 34 || pos == 36 ){
+			return -300;
+		}
+		
+		return -1;
+	}
 
 	public class comprarPropiedadeButton_Click implements ActionListener
 	{
