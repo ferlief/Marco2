@@ -23,7 +23,7 @@ public class SelecaoNumJogadores extends JFrame
 		c.setBackground(Color.white);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		
-		Selecione = new JButton("Selecione o número de jogadores abaixo:");
+		Selecione = new JButton("Selecione o numero de jogadores abaixo:");
 		Selecione.setBounds(500,50,500,30);
 		add(Selecione);
 
@@ -52,9 +52,6 @@ public class SelecaoNumJogadores extends JFrame
 		SeisJogadores.addActionListener(new selecionaJogadorButton_Click(6));
 		add(SeisJogadores);
 		
-		
-		        
-		
 	}
 	public class selecionaJogadorButton_Click implements ActionListener
 	{
@@ -64,8 +61,8 @@ public class SelecaoNumJogadores extends JFrame
 		}
 		public void actionPerformed(ActionEvent e)
 		{
-			Mesa f = new Mesa(this.numJogadores, "Banco Imobiliário");
-			f.setVisible(true);
+			Mesa tela2 = new Mesa(this.numJogadores, "Banco Imobiliario");
+			tela2.setVisible(true);
 			setVisible(false);
 		}
 	}

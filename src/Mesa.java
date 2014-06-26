@@ -13,7 +13,7 @@ public class Mesa extends JFrame
 {
 	Random random;
 	JButton jogarDado;
-	JButton comprarPropiedade;
+	JButton comprarPropriedade;
 	public int dadosAtuais[];
 	boolean mostraDados = false;
 	public int numJogadores;
@@ -38,10 +38,6 @@ public class Mesa extends JFrame
 	public int valores[];
 	int VJogador;
 	int JogCorrente = 0;
-
-	JLabel Mensagem;
-	JLabel JogadorNum;
-	JLabel JogadorNumSaldo;
 	
 	JLabel jogadoresLabel[];
 	JLabel saldoLabel[];
@@ -54,36 +50,28 @@ public class Mesa extends JFrame
 		instantiate();
 		initTokens(); 
 		
-		//Generate and add stuff to the panels
 		bottomPanel.add(jogarDado);
-		bottomPanel.add(comprarPropiedade);
-		bottomPanel.add(Mensagem);
-		bottomPanel.add(JogadorNum);
-		bottomPanel.add(JogadorNumSaldo);
+		bottomPanel.add(comprarPropriedade);
 		for(int i = 0; i < numJogadores; i++) {
 			topPanel.add(jogadoresLabel[i]);
 			topPanel.add(saldoLabel[i]);
 		}
 		
-		setTitle("Monopoly");
+		setTitle("Banco Imobiliario");
 		setSize(1200, 850);
 		setLayout(new BorderLayout());
 		add(topPanel, BorderLayout.NORTH);
 		add(split, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);	
-		//Sets a minimum size for the the board, which 
-		//is the size of the image of the board.
 		Dimension d = new Dimension(600,600);
 		tab.setMinimumSize(d);
-		//Sets a minimum size for the output area,
-		//based on the board.
 		Dimension d1 = new Dimension(214, 800);
 		outputPane.setMinimumSize(d1);
 		
 		setBackground(Color.white);
 		Container c = getContentPane();
 		c.setBackground(Color.white);
-		//this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		
 		
 		JMenuBar MenuBar = new JMenuBar();
         setJMenuBar(MenuBar);
@@ -97,19 +85,10 @@ public class Mesa extends JFrame
 		jogarDado.setBounds(750,50,120,30);
 		jogarDado.addActionListener(new jogarDadosButton_Click());
 		
-		comprarPropiedade = new JButton("Comprar Propiedade");
-		comprarPropiedade.setBounds(950,50,220,30);
-		comprarPropiedade.addActionListener(new comprarPropiedadeButton_Click());
+		comprarPropriedade = new JButton("Comprar Propriedade");
+		comprarPropriedade.setBounds(950,50,220,30);
+		comprarPropriedade.addActionListener(new comprarPropriedadeButton_Click());
 
-		Mensagem = new JLabel("");
-		Mensagem.setBounds(800,650,500,100);
-		
-		JogadorNum = new JLabel("Jogador Atual");
-		JogadorNum.setBounds(750,75,100,50);
-		
-		JogadorNumSaldo = new JLabel(String.format("R$%d", tab.jogadores[tab.jogadorAtual].dinheiro));
-		JogadorNumSaldo.setBounds(750,100,100,50);
-		
 		for(int i = 0; i < numJogadores; i++) {
 			jogadoresLabel[i] = new JLabel("Jogador " +(i+1));
 			jogadoresLabel[i].setBounds(100+(i*100),700,100,50);
@@ -124,7 +103,7 @@ public class Mesa extends JFrame
 		saldoLabel = new JLabel[6];
 		topPanel = new JPanel(new FlowLayout());
 		bottomPanel = new JPanel(new FlowLayout());
-		outputArea = new JTextArea("Welcome to Monopoly\n");
+		outputArea = new JTextArea("Banco Imobiliario\n");
 		outputArea.setEditable(false);
 		outputArea.setLineWrap(true);
 		outputPane = new JScrollPane(outputArea);
@@ -218,9 +197,9 @@ public class Mesa extends JFrame
 		if(mostraDados == true)
 		{
 			for(int n = 0; n < 2; n++)
-				g.drawImage(imagensDados[dadosAtuais[n] - 1], 800+(150*n), 200, 100, 100, null);
-			g.drawImage(cartaAtual,800, 350, 150,200,null);
-			g.drawImage(tab.jogadores[tab.jogadorAtual].img, 750, 175, null );
+				g.drawImage(imagensDados[dadosAtuais[n] - 1], 1025+(75*n), 100, 50, 50, null);
+			g.drawImage(cartaAtual, 985, 175, 150,200,null);
+			g.drawImage(tab.jogadores[tab.jogadorAtual].img, 975, 100, null );
 		}
 
 	}
@@ -244,9 +223,9 @@ public class Mesa extends JFrame
 		Jogador jogadorAtual = tab.jogadores[tab.jogadorAtual];
 		int sorteValor = calculaValor( cartaNum+1 );
 		if(sorteValor > 0 ) {
-			mostrarMensagem(String.format("Sorte! Ganhou R$%d", sorteValor));
+			mostrarMensagem(String.format("Sorte. Ganhou %d.", sorteValor));
 		} else {
-			mostrarMensagem(String.format("Revez. Perdeu R$%d", sorteValor));
+			mostrarMensagem(String.format("Reves. Perdeu %d.", sorteValor));
 		}
 		jogadorAtual.dinheiro += sorteValor;
 		if(jogadorAtual.dinheiro < 0 ) {
@@ -259,7 +238,7 @@ public class Mesa extends JFrame
 		mostrarMensagem("Foi a falencia!");
 	}
 	
-	public void mostrarCartaPropiedade()
+	public void mostrarCartaPropriedade()
 	{
 		Jogador jogadorAtual = tab.jogadores[tab.jogadorAtual];
 		Territorio terAtual = jogadorAtual.territorioAtual;
@@ -280,12 +259,6 @@ public class Mesa extends JFrame
 		outputArea.setCaretPosition(outputArea.getDocument().getLength());
 	}
 
-/*	public void mostrarMensagem(String s)
-	{
-		this.Mensagem.setText(s);
-	}*/
-	
-	/* Randomizacao do valor da carta */
 	public int VirarCarta()
 	{
 		int res = random.nextInt(30);
@@ -440,7 +413,7 @@ public class Mesa extends JFrame
 		return -1;
 	}
 
-	public class comprarPropiedadeButton_Click implements ActionListener
+	public class comprarPropriedadeButton_Click implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
@@ -480,6 +453,7 @@ public class Mesa extends JFrame
 			tab.jogadores[tab.jogadorAtual].move(r);
 			tab.jogadores[tab.jogadorAtual].territorioAtual = cartaLugar[tab.jogadores[tab.jogadorAtual].pos];
 			cartaAtual = null;
+			mostrarMensagem(String.format("Jogou os dados."));
 
 			switch(tab.jogadores[tab.jogadorAtual].territorioAtual.tipo)
 			{
@@ -490,10 +464,10 @@ public class Mesa extends JFrame
 				break;
 			case propriedade:
 				cartaAtual = tab.jogadores[tab.jogadorAtual].territorioAtual.img;
-				mostrarCartaPropiedade();
+				mostrarCartaPropriedade();
 				break;
 			case vaParaPrisao:
-				mostrarMensagem("Voce visitou a prisao");
+				mostrarMensagem("Voce visitou a prisao.");
 				break;
 			case bonus:
 				mostrarMensagem("Voce passou pelo comeco.");

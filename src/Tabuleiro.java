@@ -45,12 +45,6 @@ public class Tabuleiro extends JPanel{
 		for(int i = 0; i < numJogadores; i++) {
 			jogadores[i] = new Jogador(posJogadores[i][0], posJogadores[i][1]);
 		}
-/*		jogadores[0] = new Jogador(55, 10);
-		jogadores[1] = new Jogador(45, 15);
-		jogadores[2] = new Jogador(35, 20);
-		jogadores[3] = new Jogador(55, 25);
-		jogadores[4] = new Jogador(45, 30);
-		jogadores[5] = new Jogador(35, 35);*/
 		jogadorAtual = numJogadores-1;
 		
 		try
@@ -62,12 +56,6 @@ public class Tabuleiro extends JPanel{
 				jogadores[i].img = ImageIO.read(new File(imgJogadores[i]));
 				jogadores[i].point = ImageIO.read(new File(pointsJogadores[i]));
 			}
-/*			jogadores[0].img = ImageIO.read(new File("img/black_pin.png"));
-			jogadores[1].img = ImageIO.read(new File("img/blue_pin.png"));
-			jogadores[2].img = ImageIO.read(new File("img/red_pin.png"));
-			jogadores[3].img = ImageIO.read(new File("img/orange_pin.png"));
-			jogadores[4].img = ImageIO.read(new File("img/yellow_pin.png"));
-			jogadores[5].img = ImageIO.read(new File("img/purple_pin.png"));*/
 
 		}
 		catch(IOException e){
